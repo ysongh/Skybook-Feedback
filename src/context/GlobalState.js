@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import AppReducer from './AppReducer';
 
 const inititalState = {
-	userID: "",
+  userID: "",
   mySky: null
 }
 
@@ -11,7 +11,7 @@ export const GlobalContext = createContext(inititalState);
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, inititalState);
 
-	function setUserID(userId){
+  function setUserID(userId){
     dispatch({
       type: "SET_USERID",
       payload: userId
@@ -26,9 +26,9 @@ export const GlobalProvider = ({ children }) => {
   }
 
   return (<GlobalContext.Provider value={{
-		userID: state.userID,
+    userID: state.userID,
     mySky: state.mySky,
-		setUserID,
+    setUserID,
     setMySky
   }}>
     {children}

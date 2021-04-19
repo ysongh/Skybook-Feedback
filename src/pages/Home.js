@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { SkynetClient } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
@@ -9,12 +10,10 @@ const hostApp = "host-app.hns";
 const dataDomain = 'localhost';
 
 function Home() {
-  const { mySky, setMySky } = useContext(GlobalContext);
+  const { mySky, setUserID, setMySky } = useContext(GlobalContext);
+  const history = useHistory();
 
-  const [userID, setUserID] = useState();
   const [loggedIn, setLoggedIn] = useState(null);
-  const [message, setMessage] = useState("");
-  const [text, setText] = useState("");
 
   useEffect(() => {
     async function initMySky() {
@@ -29,6 +28,7 @@ function Home() {
         setLoggedIn(loggedIn);
         if (loggedIn) {
           setUserID(await _mySky.userID());
+          history.push('/booklist');
         }
       } catch (e) {
         console.error(e);
@@ -45,63 +45,16 @@ function Home() {
 
     if (status) {
       setUserID(await mySky.userID());
+      history.push('/booklist');
     }
   };
-  
-  const handleMySkyLogout = async () => {
-    // call logout to globally logout of mysky
-    await mySky.logout();
-
-    setLoggedIn(false);
-    setUserID('');
-  };
-
-  const getJSONExample = async () => {
-    try {
-      // Get discoverable JSON data from the given path.
-      const { data, skylink } = await mySky.getJSON("app.hns/path/file.json");
-      console.log(data, skylink);
-      setMessage(data.message);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const setJSONExample = async () => {
-    try {
-      // Set discoverable JSON data at the given path. The return type is the same as getJSON.
-      const { data, skylink } = await mySky.setJSON("app.hns/path/file.json", { message: text });
-      console.log(data, skylink);
-      setMessage(data.message);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   return (
     <div>
-      <p>userID: {userID}</p>
-      {/* <p>mySky: {mySky}</p> */}
-      {loggedIn === true && (
-        <>
-          <button onClick={handleMySkyLogout}>
-            Log Out of MySky
-          </button>
-          <button onClick={getJSONExample}>
-            Get Data
-          </button>
-          <button onClick={setJSONExample}>
-            Set Data
-          </button>
-          <input onChange={(e) => setText(e.target.value)} value={text} placeholder="Enter text" />
-        </>
-      )}
-      {loggedIn === false && (
-        <button onClick={handleMySkyLogin}>
-          Login with MySky
-        </button>
-      )}
-      <p>{message}</p>
+      <h1>Skybook Feedback</h1>
+      <button onClick={handleMySkyLogin}>
+        Login with MySky
+      </button>
     </div>
   );
 }

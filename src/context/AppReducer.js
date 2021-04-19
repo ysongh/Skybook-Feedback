@@ -1,6 +1,6 @@
 export default (state, action) => {
   switch(action.type){
-		case "SET_USERID":
+    case "SET_USERID":
       return{
         ...state,
         userID: action.payload
