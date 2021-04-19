@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SkynetClient } from "skynet-js";
+
+import { GlobalContext } from '../context/GlobalState';
 
 const portal = 'https://siasky.net/';   // allow for developing on localhost
 const client = new SkynetClient(portal);
@@ -7,8 +9,9 @@ const hostApp = "host-app.hns";
 const dataDomain = 'localhost';
 
 function Home() {
+  const { mySky, setMySky } = useContext(GlobalContext);
+
   const [userID, setUserID] = useState();
-  const [mySky, setMySky] = useState();
   const [loggedIn, setLoggedIn] = useState(null);
   const [message, setMessage] = useState("");
   const [text, setText] = useState("");
@@ -18,15 +21,14 @@ function Home() {
       try {
         // load invisible iframe and define app's data domain
         // needed for permissions write
-        const mySky = await client.loadMySky(dataDomain);
-    
+        const _mySky = await client.loadMySky(dataDomain);
         // check if user is already logged in with permissions
-        const loggedIn = await mySky.checkLogin();
+        const loggedIn = await _mySky.checkLogin();
 
-        setMySky(mySky);
+        setMySky(_mySky);
         setLoggedIn(loggedIn);
         if (loggedIn) {
-          setUserID(await mySky.userID());
+          setUserID(await _mySky.userID());
         }
       } catch (e) {
         console.error(e);
