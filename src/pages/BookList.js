@@ -10,14 +10,6 @@ function BookList() {
   const [message, setMessage] = useState("");
   const [text, setText] = useState("");
 
-  const handleMySkyLogout = async () => {
-    // call logout to globally logout of mysky
-    await mySky.logout();
-
-    setUserID('');
-    history.push('/');
-  };
-
   const getJSONExample = async () => {
     try {
       // Get discoverable JSON data from the given path.
@@ -43,9 +35,6 @@ function BookList() {
   return (
     <div>
       <p>userID: {userID}</p>
-      <button onClick={handleMySkyLogout}>
-        Log Out of MySky
-      </button>
       <button onClick={getJSONExample}>
         Get Data
       </button>
