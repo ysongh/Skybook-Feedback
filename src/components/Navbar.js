@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Menu, Button } from 'semantic-ui-react'
 import { SkynetClient } from "skynet-js";
 
@@ -15,6 +15,7 @@ function Navbar() {
   const history = useHistory();
 
   const [loggedIn, setLoggedIn] = useState(null);
+  const [activeItem, setActiveItem] = useState('');
 
   useEffect(() => {
     async function initMySky() {
@@ -62,21 +63,24 @@ function Navbar() {
   return (
     <Menu color={'blue'} stackable pointing secondary>
       <Menu.Item
-        as={NavLink}
+        as={Link}
         to="/"
         name='Skybook Feedback'
+        onClick={() => setActiveItem('home')}
       />
       <Menu.Item
-        as={NavLink}
+        as={Link}
         to="/"
         name='home'
-        active={false}
+        active={activeItem === 'home'}
+        onClick={() => setActiveItem('home')}
       />
       <Menu.Item
-        as={NavLink}
+        as={Link}
         to="/booklist"
         name='book list'
-        active={false}
+        active={activeItem === 'booklist'}
+        onClick={() => setActiveItem('booklist')}
       />
       {loggedIn ? (
         <Menu.Menu position='right'>
