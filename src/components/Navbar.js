@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Menu, Button } from 'semantic-ui-react'
 import { SkynetClient } from "skynet-js";
+import { ContentRecordDAC } from '@skynetlabs/content-record-library';
 
 import { GlobalContext } from '../context/GlobalState';
 
 const portal = 'https://siasky.net/';   // allow for developing on localhost
 const client = new SkynetClient(portal);
+const contentRecord = new ContentRecordDAC();
 const hostApp = "host-app.hns";
 const dataDomain = 'localhost';
 
@@ -23,6 +25,10 @@ function Navbar() {
         // load invisible iframe and define app's data domain
         // needed for permissions write
         const _mySky = await client.loadMySky(dataDomain);
+
+        // load necessary DACs and permissions
+        await _mySky.loadDacs(contentRecord);
+
         // check if user is already logged in with permissions
         const loggedIn = await _mySky.checkLogin();
 

@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import { Container } from 'semantic-ui-react';
 
 import { GlobalContext } from '../context/GlobalState';
 
 function BookList() {
-  const { userID, mySky, setUserID } = useContext(GlobalContext);
-  const history = useHistory();
+  const { userID, mySky } = useContext(GlobalContext);
 
   const [message, setMessage] = useState("");
   const [text, setText] = useState("");
