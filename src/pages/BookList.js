@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
 
 import { GlobalContext } from '../context/GlobalState';
 
@@ -33,7 +34,7 @@ function BookList() {
   }
 
   return (
-    <div>
+    <Container>
       <p>userID: {userID}</p>
       <button onClick={getJSONExample}>
         Get Data
@@ -43,7 +44,7 @@ function BookList() {
       </button>
       <input onChange={(e) => setText(e.target.value)} value={text} placeholder="Enter text" />
       <p>{message}</p>
-    </div>
+    </Container>
   );
 }
 
