@@ -1,18 +1,23 @@
 import React, { useContext, useState } from 'react';
 import { Container } from 'semantic-ui-react';
+import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
 
+const portal = 'https://siasky.net/';
+const client = new SkynetClient(portal);
+const { privateKey, publicKey } = genKeyPairFromSeed("sky book feed back");
+const dataKey = "localhost";
+
 function BookList() {
-  const { userID, mySky } = useContext(GlobalContext);
+  const { userID } = useContext(GlobalContext);
 
   const [message, setMessage] = useState("");
   const [text, setText] = useState("");
 
-  const getJSONExample = async () => {
+  async function getJSONFromSkyDB() {
     try {
-      // Get discoverable JSON data from the given path.
-      const { data, skylink } = await mySky.getJSON("app.hns/path/file.json");
+      const { data, skylink } = await client.db.getJSON(publicKey, dataKey);
       console.log(data, skylink);
       setMessage(data.message);
     } catch (error) {
@@ -20,10 +25,12 @@ function BookList() {
     }
   }
 
-  const setJSONExample = async () => {
+  async function setJSONFromSkyDB() {
     try {
-      // Set discoverable JSON data at the given path. The return type is the same as getJSON.
-      const { data, skylink } = await mySky.setJSON("app.hns/path/file.json", { message: text });
+      const json = {
+        message: text
+      };
+      const { data, skylink } = await client.db.setJSON(privateKey, dataKey, json);
       console.log(data, skylink);
       setMessage(data.message);
     } catch (error) {
@@ -34,10 +41,10 @@ function BookList() {
   return (
     <Container>
       <p>userID: {userID}</p>
-      <button onClick={getJSONExample}>
+      <button onClick={getJSONFromSkyDB}>
         Get Data
       </button>
-      <button onClick={setJSONExample}>
+      <button onClick={setJSONFromSkyDB}>
         Set Data
       </button>
       <input onChange={(e) => setText(e.target.value)} value={text} placeholder="Enter text" />

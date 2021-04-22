@@ -25,6 +25,7 @@ function Navbar() {
         // load invisible iframe and define app's data domain
         // needed for permissions write
         const _mySky = await client.loadMySky(dataDomain);
+        console.log(_mySky)
 
         // load necessary DACs and permissions
         await _mySky.loadDacs(contentRecord);
