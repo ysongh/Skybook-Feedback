@@ -37,7 +37,7 @@ function Navbar() {
         setLoggedIn(loggedIn);
         if (loggedIn) {
           setUserID(await _mySky.userID());
-          history.push('/booklist');
+          //history.push('/booklist');
         }
       } catch (e) {
         console.error(e);
@@ -88,6 +88,13 @@ function Navbar() {
         name='book list'
         active={activeItem === 'booklist'}
         onClick={() => setActiveItem('booklist')}
+      />
+      <Menu.Item
+        as={Link}
+        to="/addbook"
+        name='add book'
+        active={activeItem === 'addbook'}
+        onClick={() => setActiveItem('addbook')}
       />
       {loggedIn ? (
         <Menu.Menu position='right'>

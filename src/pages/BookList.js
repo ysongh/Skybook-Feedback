@@ -10,7 +10,7 @@ const { privateKey, publicKey } = genKeyPairFromSeed("sky book feed back");
 const dataKey = "localhost";
 
 function BookList() {
-  const { userID } = useContext(GlobalContext);
+  const { userID, mySky } = useContext(GlobalContext);
 
   const [message, setMessage] = useState("");
   const [text, setText] = useState("");
@@ -19,7 +19,6 @@ function BookList() {
     try {
       const { data, skylink } = await client.db.getJSON(publicKey, dataKey);
       console.log(data, skylink);
-      setMessage(data.message);
     } catch (error) {
       console.log(error);
     }
