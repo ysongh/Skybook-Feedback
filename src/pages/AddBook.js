@@ -7,7 +7,7 @@ import { GlobalContext } from '../context/GlobalState';
 
 const portal = 'https://siasky.net/';
 const client = new SkynetClient(portal);
-const { privateKey } = genKeyPairFromSeed("sky book feed back");
+const { privateKey, publicKey } = genKeyPairFromSeed("sky book feed back");
 const dataKey = "localhost";
 
 function AddBook() {
@@ -21,19 +21,24 @@ function AddBook() {
 
   async function addBookToSkyDB() {
     try {
+      let { data, skylink } = await client.db.getJSON(publicKey, dataKey);
+      console.log(data, skylink);
+
       const bookData = {
         title,
         author,
         preview,
         body,
         userID
-      }
+      };
+
+      data.books.push(bookData);
 
       const json = {
-        books: bookData
+        books: data.books
       };
-      const { data, skylink } = await client.db.setJSON(privateKey, dataKey, json);
-      console.log(data, skylink);
+      await client.db.setJSON(privateKey, dataKey, json);
+      
       history.push('/booklist');
     } catch (error) {
       console.log(error);
