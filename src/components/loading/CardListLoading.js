@@ -4,7 +4,7 @@ import { Segment, Placeholder, Button } from 'semantic-ui-react'
 function CardListLoading() {
   return (
     Array(5).fill(1).map((el, i) => (
-      <Segment raised>
+      <Segment raised key={i}>
         <Button basic color='green' disabled floated="right">
           View
         </Button>

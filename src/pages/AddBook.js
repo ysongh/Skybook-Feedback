@@ -53,17 +53,17 @@ function AddBook() {
           <Form>
             <Form.Field>
               <label>Title</label>
-              <input fluid value={title} onChange={(e) => setTitle(e.target.value)} />
+              <input value={title} onChange={(e) => setTitle(e.target.value)} />
             </Form.Field>
             <Form.Field>
               <label>Author</label>
-              <input fluid value={author} onChange={(e) => setAuthor(e.target.value)} />
+              <input value={author} onChange={(e) => setAuthor(e.target.value)} />
             </Form.Field>
             <Form.Field>
               <label>Preview</label>
-              <input fluid value={preview} onChange={(e) => setPreview(e.target.value)} />
+              <input value={preview} onChange={(e) => setPreview(e.target.value)} />
             </Form.Field>
-            <Form.TextArea label='About' value={body} onChange={(e) => setBody(e.target.value)} />
+            <Form.TextArea label='Body' rows={8} value={body} onChange={(e) => setBody(e.target.value)} />
             <Button type='submit' onClick={addBookToSkyDB}>Submit</Button>
           </Form>
         </Card.Content>
