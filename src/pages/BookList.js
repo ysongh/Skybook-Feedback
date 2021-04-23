@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Container } from 'semantic-ui-react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Container, Card, Button, Image } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
@@ -12,42 +12,45 @@ const dataKey = "localhost";
 function BookList() {
   const { userID, mySky } = useContext(GlobalContext);
 
-  const [message, setMessage] = useState("");
-  const [text, setText] = useState("");
+  const [books, setBooks] = useState([]);
 
-  async function getJSONFromSkyDB() {
-    try {
-      const { data, skylink } = await client.db.getJSON(publicKey, dataKey);
-      console.log(data, skylink);
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    async function getJSONFromSkyDB() {
+      try {
+        const { data, skylink } = await client.db.getJSON(publicKey, dataKey);
+        console.log(data, skylink);
+        setBooks(data.books);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
 
-  async function setJSONFromSkyDB() {
-    try {
-      const json = {
-        message: text
-      };
-      const { data, skylink } = await client.db.setJSON(privateKey, dataKey, json);
-      console.log(data, skylink);
-      setMessage(data.message);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    getJSONFromSkyDB();
+  }, [])
 
   return (
     <Container>
       <p>userID: {userID}</p>
-      <button onClick={getJSONFromSkyDB}>
-        Get Data
-      </button>
-      <button onClick={setJSONFromSkyDB}>
-        Set Data
-      </button>
-      <input onChange={(e) => setText(e.target.value)} value={text} placeholder="Enter text" />
-      <p>{message}</p>
+
+      {books.map((book, index) => (
+        <Card.Group key={index}>
+          <Card fluid>
+            <Card.Content>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <Card.Meta><Image src="/" size='mini' avatar />{book.author}</Card.Meta>
+                <Button basic color='green'>
+                  View
+                </Button>
+              </div>
+              <Card.Header>{book.title}</Card.Header>
+              
+              <Card.Description>
+                {book.preview}
+              </Card.Description>
+            </Card.Content>
+          </Card>
+        </Card.Group>
+      ))}
     </Container>
   );
 }
