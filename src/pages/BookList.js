@@ -45,7 +45,7 @@ function BookList() {
               <Card fluid>
                 <Card.Content>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <Card.Meta><Image src="/" size='mini' avatar />{book.author}</Card.Meta>
+                    <Card.Meta><Image src="/images/defaultuser.png" size='mini' avatar />{book.author}</Card.Meta>
                     <Button
                       as={Link}
                       basic color='green'
