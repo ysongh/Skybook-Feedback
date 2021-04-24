@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Container, Card, Button, Image } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
@@ -45,7 +46,14 @@ function BookList() {
                 <Card.Content>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <Card.Meta><Image src="/" size='mini' avatar />{book.author}</Card.Meta>
-                    <Button basic color='green'>
+                    <Button
+                      as={Link}
+                      basic color='green'
+                      to={{
+                        pathname: `/bookdetail/${index}`,
+                        state: { selectedBook: books[index] }
+                    }}
+                    >
                       View
                     </Button>
                   </div>

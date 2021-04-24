@@ -37,7 +37,6 @@ function Navbar() {
         setLoggedIn(loggedIn);
         if (loggedIn) {
           setUserID(await _mySky.userID());
-          //history.push('/booklist');
         }
       } catch (e) {
         console.error(e);
@@ -54,7 +53,6 @@ function Navbar() {
 
     if (status) {
       setUserID(await mySky.userID());
-      history.push('/booklist');
     }
   };
 

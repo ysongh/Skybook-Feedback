@@ -6,6 +6,7 @@ import { GlobalProvider } from './context/GlobalState';
 import Navbar from './components/Navbar';
 import BookList from './pages/BookList';
 import AddBook from './pages/AddBook';
+import BookDetail from './pages/BookDetail';
 
 function App() {
   return (
@@ -16,7 +17,10 @@ function App() {
           <Route path="/addbook">
             <AddBook />
           </Route>
-          <Route path="//">
+          <Route path="/bookdetail/:id">
+            <BookDetail />
+          </Route>
+          <Route path="/">
             <BookList />
           </Route>
         </Switch>
