@@ -31,7 +31,10 @@ function BookDetail() {
       <Card.Group>
         <Card fluid>
           <Card.Content>
-            <Card.Header>{state.selectedBook.title}</Card.Header>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <Card.Header>{state.selectedBook.title}</Card.Header>
+              <Card.Meta>{state.selectedBook.date}</Card.Meta>
+            </div>
             <Card.Meta><Image size='mini' avatar src="/images/defaultuser.png" />{state.selectedBook.author}</Card.Meta>
             <Card.Description>
               {state.selectedBook.preview}

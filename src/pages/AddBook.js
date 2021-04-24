@@ -29,8 +29,11 @@ function AddBook() {
         author,
         preview,
         body,
+        date: new Date().toLocaleDateString(),
         userID
       };
+
+      console.log(bookData)
 
       data.books.push(bookData);
 
