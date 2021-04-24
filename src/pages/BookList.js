@@ -15,6 +15,7 @@ function BookList() {
   const { userID, mySky } = useContext(GlobalContext);
 
   const [books, setBooks] = useState([]);
+  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ function BookList() {
         const { data, skylink } = await client.db.getJSON(publicKey, dataKey);
         console.log(data, skylink);
         setBooks(data.books);
+        setComments(data.comments);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -51,7 +53,7 @@ function BookList() {
                       basic color='green'
                       to={{
                         pathname: `/bookdetail/${index}`,
-                        state: { selectedBook: books[index] }
+                        state: { selectedBook: books[index], selectedComments: comments }
                     }}
                     >
                       View

@@ -33,13 +33,13 @@ function AddBook() {
         userID
       };
 
-      console.log(bookData)
-
       data.books.push(bookData);
 
       const json = {
-        books: data.books
+        books: data.books,
+        comments: data.comments
       };
+      
       await client.db.setJSON(privateKey, dataKey, json);
       
       history.push('/booklist');
