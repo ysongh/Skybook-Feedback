@@ -86,13 +86,11 @@ function BookDetail() {
         Comments
       </Header>
 
-      <Form reply style={{marginBottom: '2rem'}}>
+      {userID && <Form reply style={{marginBottom: '2rem'}}>
         <Form.TextArea value={comment} onChange={(e) => setComment(e.target.value)}/>
         <Button disabled={!comment} content='Add Comment' labelPosition='left' icon='edit' color='black' onClick={addComment} />
         {loading && <Spinner />}
-      </Form>
-
-      
+      </Form> }
 
       {comments.map((comment, index) => {
         if (comment.bookId === id) {
