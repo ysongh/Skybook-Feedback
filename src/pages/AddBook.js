@@ -4,6 +4,7 @@ import { Container, Card, Form, Button } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
+import Spinner from '../components/loading/Spinner';
 
 const portal = 'https://siasky.net/';
 const client = new SkynetClient(portal);
@@ -18,9 +19,11 @@ function AddBook() {
   const [author, setAuthor] = useState("");
   const [preview, setPreview] = useState("");
   const [body, setBody] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function addBookToSkyDB() {
     try {
+      setLoading(true);
       let { data, skylink } = await client.db.getJSON(publicKey, dataKey);
       console.log(data, skylink);
 
@@ -33,7 +36,7 @@ function AddBook() {
         userID
       };
 
-      data.books.unshift(bookData);
+      data.books.push(bookData);
 
       const json = {
         books: data.books,
@@ -43,13 +46,16 @@ function AddBook() {
       await client.db.setJSON(privateKey, dataKey, json);
       
       history.push('/booklist');
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
   return (
     <Container>
+      <br />
       <Card centered style={{ minWidth: '500px'}}>
         <Card.Content>
           <Card.Header style={{ textAlign: 'center', marginBottom: '10px'}}>Add Book</Card.Header>
@@ -67,7 +73,9 @@ function AddBook() {
               <input value={preview} onChange={(e) => setPreview(e.target.value)} />
             </Form.Field>
             <Form.TextArea label='Body' rows={8} value={body} onChange={(e) => setBody(e.target.value)} />
-            <Button type='submit' onClick={addBookToSkyDB}>Submit</Button>
+            <Button type='submit' color="black" onClick={addBookToSkyDB}>Submit</Button>
+            
+            {loading && <Spinner />}
           </Form>
         </Card.Content>
       </Card>

@@ -71,12 +71,6 @@ function Navbar() {
       <Menu.Item
         as={Link}
         to="/"
-        name='Skybook Feedback'
-        onClick={() => setActiveItem('home')}
-      />
-      <Menu.Item
-        as={Link}
-        to="/"
         name='home'
         active={activeItem === 'home'}
         onClick={() => setActiveItem('home')}

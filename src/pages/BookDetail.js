@@ -4,6 +4,7 @@ import { Container, Card, Image, Form, Header, Comment, Button, Label } from 'se
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
+import Spinner from '../components/loading/Spinner';
 
 const portal = 'https://siasky.net/';
 const client = new SkynetClient(portal);
@@ -17,9 +18,11 @@ function BookDetail() {
 
   const [comments, setComments] = useState(state.selectedComments);
   const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function addComment() {
     try {
+      setLoading(true);
       let { data, skylink } = await client.db.getJSON(publicKey, dataKey);
       console.log(data, skylink);
 
@@ -42,15 +45,19 @@ function BookDetail() {
 
       await client.db.setJSON(privateKey, dataKey, json);
 
+      setLoading(false);
       setComments(_comments);
       setComment("");
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   }
 
   return (
     <Container>
+      <br />
+      
       <Card.Group>
         <Card fluid>
           <Card.Content>
@@ -79,7 +86,10 @@ function BookDetail() {
       <Form reply style={{marginBottom: '2rem'}}>
         <Form.TextArea value={comment} onChange={(e) => setComment(e.target.value)}/>
         <Button disabled={!comment} content='Add Comment' labelPosition='left' icon='edit' color='black' onClick={addComment} />
+        {loading && <Spinner />}
       </Form>
+
+      
 
       {comments.map((comment, index) => {
         if (comment.bookId === id) {
