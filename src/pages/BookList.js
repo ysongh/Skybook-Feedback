@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Container, Card, Button, Image } from 'semantic-ui-react';
+import { Container, Card, Button, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
@@ -47,7 +47,10 @@ function BookList() {
               <Card fluid>
                 <Card.Content>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <Card.Meta><Image src="/images/defaultuser.png" size='mini' avatar />{book.author}</Card.Meta>
+                    <Label as='a' image>
+                      <img src='/images/defaultuser.png' />
+                      {book.author}
+                    </Label>
                     <Button
                       as={Link}
                       basic color='green'

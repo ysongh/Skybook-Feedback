@@ -33,7 +33,7 @@ function AddBook() {
         userID
       };
 
-      data.books.push(bookData);
+      data.books.unshift(bookData);
 
       const json = {
         books: data.books,

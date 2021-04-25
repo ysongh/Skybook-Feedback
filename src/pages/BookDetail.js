@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'
-import { Container, Card, Image, Form, Header, Comment, Button } from 'semantic-ui-react';
+import { Container, Card, Image, Form, Header, Comment, Button, Label } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
@@ -55,15 +55,19 @@ function BookDetail() {
         <Card fluid>
           <Card.Content>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <Card.Header>{state.selectedBook.title}</Card.Header>
+              <Card.Header style={{ fontSize: '1.75rem' }}>{state.selectedBook.title}</Card.Header>
               <Card.Meta>{state.selectedBook.date}</Card.Meta>
             </div>
-            <Card.Meta><Image size='mini' avatar src="/images/defaultuser.png" />{state.selectedBook.author}</Card.Meta>
             <Card.Description>
               {state.selectedBook.preview}
             </Card.Description>
             <br />
             <p>{state.selectedBook.body}</p>
+            <br />
+            <Label as='a' image>
+              <img src='/images/defaultuser.png' />
+              {state.selectedBook.author}
+            </Label>
           </Card.Content>
         </Card>
       </Card.Group>
