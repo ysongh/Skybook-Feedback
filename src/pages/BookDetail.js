@@ -2,13 +2,16 @@ import React, { useContext, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'
 import { Container, Card, Image, Form, Header, Comment, Button, Label } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import { GlobalContext } from '../context/GlobalState';
+import { seedphase } from '../config';
 import Spinner from '../components/loading/Spinner';
 
 const portal = 'https://siasky.net/';
 const client = new SkynetClient(portal);
-const { privateKey, publicKey } = genKeyPairFromSeed("sky book feed back");
+const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
 
 function BookDetail() {
@@ -69,7 +72,7 @@ function BookDetail() {
               {state.selectedBook.preview}
             </Card.Description>
             <br />
-            <p>{state.selectedBook.body}</p>
+            <ReactQuill className="hideToolbar" theme="snow" value={state.selectedBook.body} readOnly/>
             <br />
             <Label as='a' image>
               <img src='/images/defaultuser.png' />

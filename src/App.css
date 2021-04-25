@@ -1,0 +1,11 @@
+.text-editor .ql-editor{
+    min-height: 300px;
+}
+
+.hideToolbar .ql-editor{
+    border-top: 1px solid grey;
+}
+
+.hideToolbar .ql-toolbar.ql-snow{
+    display: none;
+}

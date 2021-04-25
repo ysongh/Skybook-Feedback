@@ -4,11 +4,13 @@ import { Container, Card, Form, Button } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
+import { seedphase } from '../config';
 import Spinner from '../components/loading/Spinner';
+import TextEditor from '../components/TextEditor';
 
 const portal = 'https://siasky.net/';
 const client = new SkynetClient(portal);
-const { privateKey, publicKey } = genKeyPairFromSeed("sky book feed back");
+const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
 
 function AddBook() {
@@ -36,12 +38,22 @@ function AddBook() {
         userID
       };
 
-      data.books.push(bookData);
+      let json;
 
-      const json = {
-        books: data.books,
-        comments: data.comments
-      };
+      if(data === null) {
+        json = {
+          books: [bookData],
+          comments: []
+        };
+      }
+      else {
+        data.books.push(bookData);
+
+        json = {
+          books: data.books,
+          comments: data.comments
+        };
+      }
       
       await client.db.setJSON(privateKey, dataKey, json);
       
@@ -56,7 +68,7 @@ function AddBook() {
   return (
     <Container>
       <br />
-      <Card centered style={{ minWidth: '500px'}}>
+      <Card centered style={{ minWidth: '700px'}}>
         <Card.Content>
           <Card.Header style={{ textAlign: 'center', marginBottom: '10px'}}>Add Book</Card.Header>
           <Form>
@@ -72,8 +84,17 @@ function AddBook() {
               <label>Preview</label>
               <input value={preview} onChange={(e) => setPreview(e.target.value)} />
             </Form.Field>
-            <Form.TextArea label='Body' rows={8} value={body} onChange={(e) => setBody(e.target.value)} />
-            <Button type='submit' color="black" onClick={addBookToSkyDB}>Submit</Button>
+            <Form.Field>
+              <label>Body</label>
+              <TextEditor body={body} setBody={setBody} />
+            </Form.Field>
+            
+            <Button
+              type='submit'
+              color="black"
+              onClick={addBookToSkyDB}
+              disabled={!title || !author || !preview || !body}
+            >Submit</Button>
             
             {loading && <Spinner />}
           </Form>

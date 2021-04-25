@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
+import { seedphase } from '../config';
 import CardListLoading from '../components/loading/CardListLoading';
 
 const portal = 'https://siasky.net/';
 const client = new SkynetClient(portal);
-const { privateKey, publicKey } = genKeyPairFromSeed("sky book feed back");
+const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
 
 function BookList() {
