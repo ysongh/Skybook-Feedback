@@ -53,7 +53,7 @@ function BookList() {
                     </Label>
                     <Button
                       as={Link}
-                      basic color='green'
+                      basic color='red'
                       to={{
                         pathname: `/bookdetail/${index}`,
                         state: { selectedBook: books[index], selectedComments: comments }

@@ -78,7 +78,7 @@ function BookDetail() {
 
       <Form reply style={{marginBottom: '2rem'}}>
         <Form.TextArea value={comment} onChange={(e) => setComment(e.target.value)}/>
-        <Button disabled={!comment} content='Add Comment' labelPosition='left' icon='edit' primary onClick={addComment} />
+        <Button disabled={!comment} content='Add Comment' labelPosition='left' icon='edit' color='black' onClick={addComment} />
       </Form>
 
       {comments.map((comment, index) => {

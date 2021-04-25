@@ -5,7 +5,7 @@ function CardListLoading() {
   return (
     Array(5).fill(1).map((el, i) => (
       <Segment raised key={i}>
-        <Button basic color='green' disabled floated="right">
+        <Button basic color='red' disabled floated="right">
           View
         </Button>
         <Placeholder fluid>

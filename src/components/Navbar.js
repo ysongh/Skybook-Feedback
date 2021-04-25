@@ -67,6 +67,7 @@ function Navbar() {
 
   return (
     <Menu color={'blue'} stackable pointing secondary>
+      <img src='/images/logo.png' style={{ width: '7rem', paddingTop: '.5rem'}} />
       <Menu.Item
         as={Link}
         to="/"
@@ -90,14 +91,14 @@ function Navbar() {
       {loggedIn ? (
         <Menu.Menu position='right'>
           <Menu.Item>
-            <Button secondary onClick={handleMySkyLogout}>Logout</Button>
+            <Button color='red' onClick={handleMySkyLogout}>Logout</Button>
           </Menu.Item>
         </Menu.Menu>
         
       ) : (
         <Menu.Menu position='right'>
           <Menu.Item>
-            <Button primary onClick={handleMySkyLogin}>Login</Button>
+            <Button color='black' onClick={handleMySkyLogin}>Login</Button>
           </Menu.Item>
         </Menu.Menu>
       )}
