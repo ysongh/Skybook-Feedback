@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import BookList from './pages/BookList';
 import AddBook from './pages/AddBook';
 import BookDetail from './pages/BookDetail';
+import MyBooks from './pages/MyBooks';
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
+          <Route path="/mybooks">
+            <MyBooks />
+          </Route>
           <Route path="/addbook">
             <AddBook />
           </Route>

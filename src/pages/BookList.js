@@ -39,7 +39,11 @@ function BookList() {
 
   return (
     <Container>
-      <br />
+      <Card
+        fluid
+        color='red'
+        header='Create your books or stories and share it for the world to see'
+      />
 
       {loading 
         ? <CardListLoading /> 
