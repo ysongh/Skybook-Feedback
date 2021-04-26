@@ -13,12 +13,15 @@ const dataDomain = 'localhost';
 function MyBooks() {
   const { userID, mySky } = useContext(GlobalContext);
 
+  const [books, setBooks] = useState([]);
+
   useEffect(() => {
     const getJSONfromMySky = async (userID) => {
       try {
         // Get discoverable JSON data from the given path.
         const { data, skylink } = await mySky.getJSON(dataDomain + "/" + userID);
         console.log(data, skylink);
+        setBooks(data.books);
       } catch (error) {
         console.log(error);
       }
@@ -48,38 +51,32 @@ function MyBooks() {
         Set Data
       </button>
       <Card.Group>
-        <Card>
-          <Card.Content>
-            <Card.Header>The book</Card.Header>
-            <Card.Meta>4/25/21</Card.Meta>
-          </Card.Content>
-          <Card.Content extra>
-            <div className='ui two buttons'>
-              <Button basic color='green'>
-                Open
-              </Button>
-              <Button basic color='red'>
-                Publish
-              </Button>
-            </div>
-          </Card.Content>
-        </Card>
-        <Card>
-          <Card.Content>
-            <Card.Header>The book</Card.Header>
-            <Card.Meta>4/25/21</Card.Meta>
-          </Card.Content>
-          <Card.Content extra>
-            <div className='ui two buttons'>
-              <Button basic color='green'>
-                Open
-              </Button>
-              <Button basic color='red'>
-                Publish
-              </Button>
-            </div>
-          </Card.Content>
-        </Card>
+        { books.map((book, index) => (
+          <Card key={index}>
+            <Card.Content>
+              <Card.Header>{book.title}</Card.Header>
+              <Card.Meta>{book.date}</Card.Meta>
+            </Card.Content>
+            <Card.Content extra>
+              <div className='ui two buttons'>
+                <Button 
+                  as={Link}
+                  basic
+                  color='green'
+                  to={{
+                      pathname: `/editbook/${index}`,
+                      state: { selectedBook: books[index]}
+                    }}
+                  >
+                  Open
+                </Button>
+                <Button basic color='red'>
+                  Publish
+                </Button>
+              </div>
+            </Card.Content>
+          </Card>
+        )) }
       </Card.Group>
     </Container>
   );

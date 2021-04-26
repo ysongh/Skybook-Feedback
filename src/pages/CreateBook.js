@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useHistory, useLocation, useParams, Link } from 'react-router-dom';
 import { Container, Input, Form, Button } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
@@ -16,11 +16,20 @@ const dataDomain = 'localhost';
 
 function CreateBook() {
   const { userID, mySky } = useContext(GlobalContext);
+  const { state = {} } = useLocation();
   const history = useHistory();
+  const { id } = useParams();
 
   const [title, setTitle] = useState("Mybook");
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if(state.selectedBook){
+      setTitle(state.selectedBook.title);
+      setBody(state.selectedBook.body);
+    }
+  }, [])
 
   const setJSONtoMySky = async () => {
     try {
@@ -31,23 +40,35 @@ function CreateBook() {
       const bookData = {
         title,
         body,
-        date: new Date().toLocaleDateString(),
+        date: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
         userID
       };
 
       let json;
 
-      if(data === null) {
+      // edit mode
+      if(id) {
+        data.books[id].title = title;
+        data.books[id].body = body;
+        data.books[id].date = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
+
         json = {
-          books: [bookData],
+          books: data.books
         };
       }
       else {
-        data.books.push(bookData);
-
-        json = {
-          books: data.books,
-        };
+        if(data === null) {
+          json = {
+            books: [bookData],
+          };
+        }
+        else {
+          data.books.push(bookData);
+  
+          json = {
+            books: data.books,
+          };
+        }
       }
 
       // Set discoverable JSON data at the given path. The return type is the same as getJSON.

@@ -28,6 +28,9 @@ function App() {
           <Route path="/bookdetail/:id">
             <BookDetail />
           </Route>
+          <Route path="/editbook/:id">
+            <CreateBook />
+          </Route>
           <Route path="/">
             <BookList />
           </Route>
