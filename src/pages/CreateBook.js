@@ -12,7 +12,7 @@ const portal = 'https://siasky.net/';
 const client = new SkynetClient(portal);
 const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
-const dataDomain = 'localhost';
+const dataDomain = window.location.hostname;
 
 function CreateBook() {
   const { userID, mySky } = useContext(GlobalContext);

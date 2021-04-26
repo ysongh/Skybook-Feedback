@@ -10,7 +10,7 @@ import PublishModal from '../components/PublishModal';
 import CardLoading from '../components/loading/CardLoading';
 
 const portal = 'https://siasky.net/';
-const dataDomain = 'localhost';
+const dataDomain = window.location.hostname;
 
 function MyBooks() {
   const { userID, mySky } = useContext(GlobalContext);

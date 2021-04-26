@@ -10,7 +10,9 @@ const portal = 'https://siasky.net/';   // allow for developing on localhost
 const client = new SkynetClient(portal);
 const contentRecord = new ContentRecordDAC();
 const hostApp = "host-app.hns";
-const dataDomain = 'localhost';
+const dataDomain = window.location.hostname;
+
+console.log(window.location.hostname)
 
 function Navbar() {
   const { userID, mySky, setUserID, setMySky } = useContext(GlobalContext);
