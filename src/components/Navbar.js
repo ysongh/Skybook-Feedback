@@ -78,13 +78,6 @@ function Navbar() {
         />
         {userID && <Menu.Item
           as={Link}
-          to="/addbook"
-          name='add book'
-          active={activeItem === 'addbook'}
-          onClick={() => setActiveItem('addbook')}
-        />}
-        {userID && <Menu.Item
-          as={Link}
           to="/mybooks"
           name='my books'
           active={activeItem === 'mybooks'}
