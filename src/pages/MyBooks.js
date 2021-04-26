@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Container, Header, Card, Button } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 import { ContentRecordDAC } from '@skynetlabs/content-record-library';
@@ -40,6 +41,9 @@ function MyBooks() {
     <Container>
       <div style={{ marginBottom: '1rem' }}></div>
       <Header as='h4'>User Id: {userID}</Header>
+      <Button as={Link} to="/createbook" color='black' style={{ marginBottom: '1rem' }}>
+        New Book
+      </Button>
       <button onClick={setJSONtoMySky}>
         Set Data
       </button>

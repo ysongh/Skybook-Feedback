@@ -8,6 +8,7 @@ import BookList from './pages/BookList';
 import AddBook from './pages/AddBook';
 import BookDetail from './pages/BookDetail';
 import MyBooks from './pages/MyBooks';
+import CreateBook from './pages/CreateBook';
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           </Route>
           <Route path="/addbook">
             <AddBook />
+          </Route>
+          <Route path="/createbook">
+            <CreateBook />
           </Route>
           <Route path="/bookdetail/:id">
             <BookDetail />
