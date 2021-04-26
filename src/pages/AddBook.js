@@ -13,14 +13,14 @@ const client = new SkynetClient(portal);
 const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
 
-function AddBook() {
+function AddBook({ selectedTitle, selectedBody, setOpen}) {
   const { userID, mySky } = useContext(GlobalContext);
   const history = useHistory();
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(selectedTitle);
   const [author, setAuthor] = useState("");
   const [preview, setPreview] = useState("");
-  const [body, setBody] = useState("");
+  const [body, setBody] = useState(selectedBody);
   const [loading, setLoading] = useState(false);
 
   async function addBookToSkyDB() {
@@ -56,7 +56,7 @@ function AddBook() {
       }
       
       await client.db.setJSON(privateKey, dataKey, json);
-      
+      setOpen(false);
       history.push('/booklist');
       setLoading(false);
     } catch (error) {
@@ -67,10 +67,8 @@ function AddBook() {
 
   return (
     <Container>
-      <br />
-      <Card centered style={{ minWidth: '700px'}}>
+      <Card centered style={{ width: '100%'}}>
         <Card.Content>
-          <Card.Header style={{ textAlign: 'center', marginBottom: '10px'}}>Add Book</Card.Header>
           <Form>
             <Form.Field>
               <label>Title</label>

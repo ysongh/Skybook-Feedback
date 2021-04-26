@@ -6,6 +6,7 @@ import { ContentRecordDAC } from '@skynetlabs/content-record-library';
 
 import { GlobalContext } from '../context/GlobalState';
 import { seedphase } from '../config';
+import PublishModal from '../components/PublishModal';
 
 const portal = 'https://siasky.net/';
 const dataDomain = 'localhost';
@@ -14,6 +15,15 @@ function MyBooks() {
   const { userID, mySky } = useContext(GlobalContext);
 
   const [books, setBooks] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+
+  const openModal = index => {
+    setOpen(true);
+    setTitle(books[index].title)
+    setBody(books[index].body);
+  }
 
   useEffect(() => {
     const getJSONfromMySky = async (userID) => {
@@ -30,16 +40,6 @@ function MyBooks() {
     getJSONfromMySky(userID);
   }, [userID])
 
-  const setJSONtoMySky = async () => {
-    try {
-      // Set discoverable JSON data at the given path. The return type is the same as getJSON.
-      const { data, skylink } = await mySky.setJSON((dataDomain + "/" + userID), { message: "test123" });
-      console.log(data, skylink);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
     <Container>
       <div style={{ marginBottom: '1rem' }}></div>
@@ -47,9 +47,6 @@ function MyBooks() {
       <Button as={Link} to="/createbook" color='black' style={{ marginBottom: '1rem' }}>
         New Book
       </Button>
-      <button onClick={setJSONtoMySky}>
-        Set Data
-      </button>
       <Card.Group>
         { books.map((book, index) => (
           <Card key={index}>
@@ -70,7 +67,7 @@ function MyBooks() {
                   >
                   Open
                 </Button>
-                <Button basic color='red'>
+                <Button basic color='red' onClick={() => openModal(index)}>
                   Publish
                 </Button>
               </div>
@@ -78,6 +75,11 @@ function MyBooks() {
           </Card>
         )) }
       </Card.Group>
+      <PublishModal
+        open={open}
+        setOpen={setOpen}
+        title={title}
+        body={body} />
     </Container>
   );
 }
