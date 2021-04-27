@@ -88,7 +88,7 @@ function CreateBook() {
       <br />
       <Form>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Input style={{ flex: 1 }} value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Input style={{ flex: 1 }} value={title} placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
           <Button color='black' onClick={setJSONtoMySky}>
             Save
           </Button>

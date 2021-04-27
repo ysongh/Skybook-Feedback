@@ -5,6 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 function TextEditor({ body, setBody }) {
   const modules = {
     toolbar: [
+      [{ 'font': [] }],
       [{ 'header': [1, 2, false] }],
       ['bold', 'italic', 'underline','strike', 'blockquote'],
       [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
