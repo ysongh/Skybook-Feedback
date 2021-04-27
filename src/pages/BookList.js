@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Container, Card, Button, Label } from 'semantic-ui-react';
+import { Container, Card, Button, Label, Pagination } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
@@ -11,11 +11,13 @@ const portal = 'https://siasky.net/';
 const client = new SkynetClient(portal);
 const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
+const TOTALPAGE = 4;
 
 function BookList() {
   const { userID, mySky } = useContext(GlobalContext);
 
   const [books, setBooks] = useState([]);
+  const [currentSet, setCurrentSet] = useState([]);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -26,6 +28,7 @@ function BookList() {
         const { data, skylink } = await client.db.getJSON(publicKey, dataKey);
         console.log(data, skylink);
         setBooks(data.books);
+        setCurrentSet(data.books.slice(0, TOTALPAGE));
         setComments(data.comments);
         setLoading(false);
       } catch (error) {
@@ -37,6 +40,11 @@ function BookList() {
     getJSONFromSkyDB();
   }, [])
 
+  const changePage = (e, data) => {
+    const bookNumber = (+data.activePage - 1) * TOTALPAGE;
+    setCurrentSet(books.slice(bookNumber, bookNumber + TOTALPAGE))
+  }
+
   return (
     <Container>
       <Card
@@ -47,7 +55,7 @@ function BookList() {
 
       {loading 
         ? <CardListLoading /> 
-        : books.map((book, index) => (
+        : currentSet.map((book, index) => (
             <Card.Group key={index}>
               <Card fluid>
                 <Card.Content>
@@ -77,6 +85,10 @@ function BookList() {
             </Card.Group>
           ))
       }
+
+      <center style={{ marginTop: '.7rem'}}>
+        <Pagination defaultActivePage={1} totalPages={Math.ceil(books.length / TOTALPAGE)} onPageChange={(e, data) => changePage(e, data)}/>
+      </center>
       
     </Container>
   );
