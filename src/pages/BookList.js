@@ -18,6 +18,7 @@ function BookList() {
 
   const [books, setBooks] = useState([]);
   const [currentSet, setCurrentSet] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +43,8 @@ function BookList() {
 
   const changePage = (e, data) => {
     const bookNumber = (+data.activePage - 1) * TOTALPAGE;
-    setCurrentSet(books.slice(bookNumber, bookNumber + TOTALPAGE))
+    setCurrentSet(books.slice(bookNumber, bookNumber + TOTALPAGE));
+    setCurrentPage(+data.activePage - 1);
   }
 
   return (
@@ -68,8 +70,8 @@ function BookList() {
                       as={Link}
                       basic color='red'
                       to={{
-                        pathname: `/bookdetail/${index}`,
-                        state: { selectedBook: books[index], selectedComments: comments }
+                        pathname: `/bookdetail/${(index + (TOTALPAGE * currentPage))}`,
+                        state: { selectedBook: book, selectedComments: comments }
                     }}
                     >
                       View
