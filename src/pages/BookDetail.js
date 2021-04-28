@@ -58,7 +58,7 @@ function BookDetail() {
   }
 
   return (
-    <Container>
+    <Container className="bodyHeight">
       <br />
       
       <Card.Group>

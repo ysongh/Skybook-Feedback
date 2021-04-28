@@ -9,6 +9,7 @@ import AddBook from './pages/AddBook';
 import BookDetail from './pages/BookDetail';
 import MyBooks from './pages/MyBooks';
 import CreateBook from './pages/CreateBook';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <BookList />
           </Route>
         </Switch>
+        <Footer />
       </Router>
     </GlobalProvider>
   );
