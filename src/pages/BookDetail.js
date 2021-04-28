@@ -15,7 +15,7 @@ const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
 
 function BookDetail() {
-  const { userID } = useContext(GlobalContext);
+  const { userID, contentRecord } = useContext(GlobalContext);
   const { id } = useParams();
   const { state = {} } = useLocation();
 
@@ -46,7 +46,12 @@ function BookDetail() {
         comments: data.comments
       };
 
-      await client.db.setJSON(privateKey, dataKey, json);
+      const res = await client.db.setJSON(privateKey, dataKey, json);
+
+      await contentRecord.recordNewContent({
+        skylink: res.skylink,
+        metadata: res.data
+      });
 
       setLoading(false);
       setComments(_comments);

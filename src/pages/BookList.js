@@ -14,7 +14,7 @@ const dataKey = "localhost";
 const TOTALPAGE = 4;
 
 function BookList() {
-  const { userID, mySky } = useContext(GlobalContext);
+  const { userID, contentRecord } = useContext(GlobalContext);
 
   const [books, setBooks] = useState([]);
   const [currentSet, setCurrentSet] = useState([]);
@@ -28,6 +28,14 @@ function BookList() {
         setLoading(true);
         const { data, skylink } = await client.db.getJSON(publicKey, dataKey);
         console.log(data, skylink);
+
+        if(userID){
+          await contentRecord.recordInteraction({
+            skylink,
+            metadata: {"action": "view books"}
+          });
+        }
+        
         setBooks(data.books);
         setCurrentSet(data.books.slice(0, TOTALPAGE));
         setComments(data.comments);
