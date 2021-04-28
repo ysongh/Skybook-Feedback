@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'
-import { Container, Card, Image, Form, Header, Comment, Button, Label } from 'semantic-ui-react';
+import { Grid, Container, Card, Image, Form, Header, Comment, Button, Label } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -60,57 +60,61 @@ function BookDetail() {
   return (
     <Container className="bodyHeight">
       <br />
-      
-      <Card.Group>
-        <Card fluid>
-          <Card.Content>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <Card.Header style={{ fontSize: '1.75rem' }}>{state.selectedBook.title}</Card.Header>
-              <Card.Meta>{state.selectedBook.date}</Card.Meta>
-            </div>
-            <Card.Description>
-              {state.selectedBook.preview}
-            </Card.Description>
-            <br />
-            <ReactQuill className="hideToolbar" theme="snow" value={state.selectedBook.body} readOnly/>
-            <br />
-            <Label as='a' image>
-              <img src='/images/defaultuser.png' />
-              {state.selectedBook.author}
-            </Label>
-          </Card.Content>
-        </Card>
-      </Card.Group>
 
-      <Header as='h3' dividing>
-        Comments
-      </Header>
+      <Grid>
+        <Grid.Column mobile={16} tablet={16} computer={10}>
+          <Card.Group>
+            <Card fluid>
+              <Card.Content>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <Card.Header style={{ fontSize: '1.75rem' }}>{state.selectedBook.title}</Card.Header>
+                  <Card.Meta>{state.selectedBook.date}</Card.Meta>
+                </div>
+                <Card.Description>
+                  {state.selectedBook.preview}
+                </Card.Description>
+                <br />
+                <ReactQuill className="hideToolbar" theme="snow" value={state.selectedBook.body} readOnly/>
+                <br />
+                <Label as='a' image>
+                  <img src='/images/defaultuser.png' />
+                  {state.selectedBook.author}
+                </Label>
+              </Card.Content>
+            </Card>
+          </Card.Group>
+        </Grid.Column>
+        <Grid.Column mobile={16} tablet={16} computer={6}>
+          <Header as='h3' dividing>
+            Comments
+          </Header>
 
-      {userID && <Form reply style={{marginBottom: '2rem'}}>
-        <Form.TextArea value={comment} onChange={(e) => setComment(e.target.value)}/>
-        <Button disabled={!comment} content='Add Comment' labelPosition='left' icon='edit' color='black' onClick={addComment} />
-        {loading && <Spinner />}
-      </Form> }
+          {userID && <Form reply style={{marginBottom: '2rem'}}>
+            <Form.TextArea value={comment} onChange={(e) => setComment(e.target.value)}/>
+            <Button disabled={!comment} content='Add Comment' labelPosition='left' icon='edit' color='black' onClick={addComment} />
+            {loading && <Spinner />}
+          </Form> }
 
-      {comments.map((comment, index) => {
-        if (comment.bookId === id) {
-          return (
-            <Comment style={{marginBottom: '1rem'}} key={index}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image size='mini' avatar src="/images/defaultuser.png" />
-                <Comment.Author as='a'>{comment.userID}</Comment.Author>
-              </div>
-              <Comment.Content>
-                <Comment.Metadata>
-                  <div>{comment.date}</div>
-                </Comment.Metadata>
-                <Comment.Text>{comment.comment}</Comment.Text>
-              </Comment.Content>
-            </Comment>
-          )
-        }
-      })}
-      
+          {comments.map((comment, index) => {
+            if (comment.bookId === id) {
+              return (
+                <Comment style={{marginBottom: '1rem'}} key={index}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Image size='mini' avatar src="/images/defaultuser.png" />
+                    <Comment.Author as='a'>{comment.userID.substring(0,15)}...{comment.userID.substring(49,64)}</Comment.Author>
+                  </div>
+                  <Comment.Content>
+                    <Comment.Metadata>
+                      <div>{comment.date}</div>
+                    </Comment.Metadata>
+                    <Comment.Text>{comment.comment}</Comment.Text>
+                  </Comment.Content>
+                </Comment>
+              )
+            }
+          })}
+        </Grid.Column>
+      </Grid>
     </Container>
   );
 }
