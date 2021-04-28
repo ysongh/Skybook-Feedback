@@ -3,7 +3,8 @@ import AppReducer from './AppReducer';
 
 const inititalState = {
   userID: "",
-  mySky: null
+  mySky: null,
+  contentRecord: null
 }
 
 export const GlobalContext = createContext(inititalState);
@@ -25,11 +26,20 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
+  function setContentRecord(contentRecord){
+    dispatch({
+      type: "SET_CONTENTRECORD",
+      payload: contentRecord
+    })
+  }
+
   return (<GlobalContext.Provider value={{
     userID: state.userID,
     mySky: state.mySky,
+    contentRecord: state.contentRecord,
     setUserID,
-    setMySky
+    setMySky,
+    setContentRecord
   }}>
     {children}
   </GlobalContext.Provider>);

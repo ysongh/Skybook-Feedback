@@ -13,7 +13,7 @@ const portal = 'https://siasky.net/';
 const dataDomain = window.location.hostname;
 
 function MyBooks() {
-  const { userID, mySky } = useContext(GlobalContext);
+  const { userID, mySky, contentRecord } = useContext(GlobalContext);
 
   const [books, setBooks] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -35,6 +35,12 @@ function MyBooks() {
         // Get discoverable JSON data from the given path.
         const { data, skylink } = await mySky.getJSON(dataDomain + "/" + userID);
         console.log(data, skylink);
+
+        await contentRecord.recordInteraction({
+          skylink,
+          metadata: data
+        });
+        
         setLoading(false);
         setBooks(data.books);
       } catch (error) {

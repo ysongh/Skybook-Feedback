@@ -10,6 +10,11 @@ export default (state, action) => {
         ...state,
         mySky: action.payload
       }
+    case "SET_CONTENTRECORD":
+      return{
+        ...state,
+        contentRecord: action.payload
+      }
     default:
       return state;
   }

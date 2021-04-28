@@ -15,7 +15,7 @@ const dataDomain = window.location.hostname;
 console.log(window.location.hostname)
 
 function Navbar() {
-  const { userID, mySky, setUserID, setMySky } = useContext(GlobalContext);
+  const { userID, mySky, setUserID, setMySky, setContentRecord } = useContext(GlobalContext);
   const history = useHistory();
 
   const [loggedIn, setLoggedIn] = useState(null);
@@ -37,6 +37,7 @@ function Navbar() {
 
         setMySky(_mySky);
         setLoggedIn(loggedIn);
+        setContentRecord(contentRecord);
         if (loggedIn) {
           setUserID(await _mySky.userID());
         }

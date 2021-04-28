@@ -15,7 +15,7 @@ const dataKey = "localhost";
 const dataDomain = window.location.hostname;
 
 function CreateBook() {
-  const { userID, mySky } = useContext(GlobalContext);
+  const { userID, mySky, contentRecord } = useContext(GlobalContext);
   const { state = {} } = useLocation();
   const history = useHistory();
   const { id } = useParams();
@@ -74,6 +74,11 @@ function CreateBook() {
       // Set discoverable JSON data at the given path. The return type is the same as getJSON.
       const res = await mySky.setJSON((dataDomain + "/" + userID), json);
       console.log(res);
+
+      await contentRecord.recordNewContent({
+        skylink: res.skylink,
+        metadata: res.data
+      });
 
       history.push('/mybooks');
       setLoading(false);
