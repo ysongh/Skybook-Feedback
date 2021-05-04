@@ -52,6 +52,33 @@ function MyBooks() {
     getJSONfromMySky(userID);
   }, [userID])
 
+  const removeABookfromMySky = async index => {
+    try {
+      setLoading(true);
+
+      let temp = books;
+      if(books.length === 1){
+        temp = [];
+      } else {
+        temp.splice(index, 1);
+      }
+      
+      const { data, skylink } = await mySky.setJSON((dataDomain + "/" + userID), { books: temp });
+      console.log(data, skylink);
+
+      await contentRecord.recordInteraction({
+        skylink,
+        metadata: { "action": "remove a book" }
+      });
+
+      setBooks(data.books);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  }
+
   return (
     <Container className="bodyHeight">
       <div style={{ marginBottom: '1rem' }}></div>
@@ -65,10 +92,9 @@ function MyBooks() {
           { books.map((book, index) => (
             <Card key={index}>
               <Card.Content>
-                <Button icon style={{ float: 'right' }} color='red'>
+                <Button icon style={{ float: 'right' }} color='red' onClick={() => removeABookfromMySky(index)}>
                   <Icon name='trash alternate' />
                 </Button>
-                
                 <Card.Header>{book.title}</Card.Header>
                 <Card.Meta>{book.date}</Card.Meta>
               </Card.Content>
