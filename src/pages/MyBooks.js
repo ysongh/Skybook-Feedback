@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Header, Card, Button, Placeholder } from 'semantic-ui-react';
+import { Container, Header, Card, Button, Placeholder, Icon } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 import { ContentRecordDAC } from '@skynetlabs/content-record-library';
 
@@ -65,6 +65,10 @@ function MyBooks() {
           { books.map((book, index) => (
             <Card key={index}>
               <Card.Content>
+                <Button icon style={{ float: 'right' }} color='red'>
+                  <Icon name='trash alternate' />
+                </Button>
+                
                 <Card.Header>{book.title}</Card.Header>
                 <Card.Meta>{book.date}</Card.Meta>
               </Card.Content>
