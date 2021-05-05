@@ -1,20 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Container, Card, Button, Label, Pagination } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
-import { seedphase } from '../config';
 import CardListLoading from '../components/loading/CardListLoading';
 
-const portal = 'https://siasky.net/';
-const client = new SkynetClient(portal);
-const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
 const TOTALPAGE = 4;
 
 function BookList() {
-  const { userID, contentRecord } = useContext(GlobalContext);
+  const { userID, contentRecord, publicKey, clientSkyDB } = useContext(GlobalContext);
 
   const [books, setBooks] = useState([]);
   const [currentSet, setCurrentSet] = useState([]);
@@ -26,7 +21,7 @@ function BookList() {
     async function getJSONFromSkyDB() {
       try {
         setLoading(true);
-        const { data, skylink } = await client.db.getJSON(publicKey, dataKey);
+        const { data, skylink } = await clientSkyDB.db.getJSON(publicKey, dataKey);
         console.log(data, skylink);
 
         if(userID){

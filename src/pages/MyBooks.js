@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Header, Card, Button, Placeholder, Confirm, Icon } from 'semantic-ui-react';
-import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
-import { ContentRecordDAC } from '@skynetlabs/content-record-library';
 
 import { GlobalContext } from '../context/GlobalState';
-import { seedphase } from '../config';
 import PublishModal from '../components/PublishModal';
 import CardLoading from '../components/loading/CardLoading';
 
-const portal = 'https://siasky.net/';
 const dataDomain = window.location.hostname;
 
 function MyBooks() {

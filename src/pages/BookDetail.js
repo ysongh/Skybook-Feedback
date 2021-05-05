@@ -1,21 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'
 import { Grid, Container, Card, Image, Form, Header, Comment, Button, Label } from 'semantic-ui-react';
-import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 import { GlobalContext } from '../context/GlobalState';
-import { seedphase } from '../config';
 import Spinner from '../components/loading/Spinner';
 
-const portal = 'https://siasky.net/';
-const client = new SkynetClient(portal);
-const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 const dataKey = "localhost";
 
 function BookDetail() {
-  const { userID, contentRecord } = useContext(GlobalContext);
+  const { userID, contentRecord, privateKey, publicKey, clientSkyDB } = useContext(GlobalContext);
   const { id } = useParams();
   const { state = {} } = useLocation();
 
@@ -26,7 +21,7 @@ function BookDetail() {
   async function addComment() {
     try {
       setLoading(true);
-      let { data, skylink } = await client.db.getJSON(publicKey, dataKey);
+      let { data, skylink } = await clientSkyDB.db.getJSON(publicKey, dataKey);
       console.log(data, skylink);
 
       const commentData = {
@@ -46,7 +41,7 @@ function BookDetail() {
         comments: data.comments
       };
 
-      const res = await client.db.setJSON(privateKey, dataKey, json);
+      const res = await clientSkyDB.db.setJSON(privateKey, dataKey, json);
 
       await contentRecord.recordNewContent({
         skylink: res.skylink,

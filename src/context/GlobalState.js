@@ -1,10 +1,21 @@
 import React, { createContext, useReducer } from 'react';
 import AppReducer from './AppReducer';
+import { genKeyPairFromSeed } from "skynet-js";
+import { SkynetClient } from "skynet-js";
+
+import { seedphase } from '../config';
+
+const portal = 'https://siasky.net/';
+const client = new SkynetClient(portal);
+const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
 
 const inititalState = {
   userID: "",
   mySky: null,
-  contentRecord: null
+  contentRecord: null,
+  privateKey: privateKey,
+  publicKey: publicKey,
+  clientSkyDB: client
 }
 
 export const GlobalContext = createContext(inititalState);
@@ -37,6 +48,9 @@ export const GlobalProvider = ({ children }) => {
     userID: state.userID,
     mySky: state.mySky,
     contentRecord: state.contentRecord,
+    privateKey: state.privateKey,
+    publicKey: state.publicKey,
+    clientSkyDB: state.clientSkyDB,
     setUserID,
     setMySky,
     setContentRecord

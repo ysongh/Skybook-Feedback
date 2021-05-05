@@ -1,17 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams, Link } from 'react-router-dom';
 import { Container, Input, Form, Button } from 'semantic-ui-react';
-import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 
 import { GlobalContext } from '../context/GlobalState';
-import { seedphase } from '../config';
 import Spinner from '../components/loading/Spinner';
 import TextEditor from '../components/TextEditor';
 
-const portal = 'https://siasky.net/';
-const client = new SkynetClient(portal);
-const { privateKey, publicKey } = genKeyPairFromSeed(seedphase);
-const dataKey = "localhost";
 const dataDomain = window.location.hostname;
 
 function CreateBook() {
