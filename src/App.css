@@ -13,3 +13,7 @@
 .hideToolbar .ql-toolbar.ql-snow{
     display: none;
 }
+
+.ui.dimmer{
+    background-color: rgba(0,0,0,.25);
+}

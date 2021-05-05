@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Header, Card, Button, Placeholder, Icon } from 'semantic-ui-react';
+import { Container, Header, Card, Button, Placeholder, Confirm, Icon } from 'semantic-ui-react';
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 import { ContentRecordDAC } from '@skynetlabs/content-record-library';
 
@@ -20,6 +20,7 @@ function MyBooks() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
 
   const openModal = index => {
     setOpen(true);
@@ -72,6 +73,7 @@ function MyBooks() {
       });
 
       setBooks(data.books);
+      setOpenConfirm(false);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -92,7 +94,7 @@ function MyBooks() {
           { books.map((book, index) => (
             <Card key={index}>
               <Card.Content>
-                <Button icon style={{ float: 'right' }} color='red' onClick={() => removeABookfromMySky(index)}>
+                <Button icon style={{ float: 'right' }} color='red' onClick={() => setOpenConfirm(true)}>
                   <Icon name='trash alternate' />
                 </Button>
                 <Card.Header>{book.title}</Card.Header>
@@ -116,6 +118,10 @@ function MyBooks() {
                   </Button>
                 </div>
               </Card.Content>
+              <Confirm
+                open={openConfirm}
+                onCancel={() => setOpenConfirm(false)}
+                onConfirm={() => removeABookfromMySky(index)} />
             </Card>
           )) }
         </Card.Group>
