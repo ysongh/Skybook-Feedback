@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalState';
 import CardListLoading from '../components/loading/CardListLoading';
 
-const dataKey = "localhost";
 const TOTALPAGE = 4;
 
 function BookList() {
@@ -14,14 +13,13 @@ function BookList() {
   const [books, setBooks] = useState([]);
   const [currentSet, setCurrentSet] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getJSONFromSkyDB() {
       try {
         setLoading(true);
-        const { data, skylink } = await clientSkyDB.db.getJSON(publicKey, dataKey);
+        const { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "books");
         console.log(data, skylink);
 
         if(userID){
@@ -33,7 +31,6 @@ function BookList() {
         
         setBooks(data.books);
         setCurrentSet(data.books.slice(0, TOTALPAGE));
-        setComments(data.comments);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -74,7 +71,7 @@ function BookList() {
                       basic color='red'
                       to={{
                         pathname: `/bookdetail/${(index + (TOTALPAGE * currentPage))}`,
-                        state: { selectedBook: book, selectedComments: comments }
+                        state: { selectedBook: book }
                     }}
                     >
                       View

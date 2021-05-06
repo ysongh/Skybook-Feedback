@@ -6,12 +6,10 @@ import { GlobalContext } from '../context/GlobalState';
 import Spinner from '../components/loading/Spinner';
 import TextEditor from '../components/TextEditor';
 
-const dataKey = "localhost";
-
 function AddBook({ selectedTitle, selectedBody, setOpen}) {
   const { userID, privateKey, publicKey, clientSkyDB } = useContext(GlobalContext);
   const history = useHistory();
-
+  
   const [title, setTitle] = useState(selectedTitle);
   const [author, setAuthor] = useState("");
   const [preview, setPreview] = useState("");
@@ -21,7 +19,7 @@ function AddBook({ selectedTitle, selectedBody, setOpen}) {
   async function addBookToSkyDB() {
     try {
       setLoading(true);
-      let { data, skylink } = await clientSkyDB.db.getJSON(publicKey, dataKey);
+      let { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "books");
       console.log(data, skylink);
 
       const bookData = {
@@ -37,20 +35,18 @@ function AddBook({ selectedTitle, selectedBody, setOpen}) {
 
       if(data === null) {
         json = {
-          books: [bookData],
-          comments: []
+          books: [bookData]
         };
       }
       else {
         data.books.push(bookData);
 
         json = {
-          books: data.books,
-          comments: data.comments
+          books: data.books
         };
       }
       
-      await clientSkyDB.db.setJSON(privateKey, dataKey, json);
+      await clientSkyDB.db.setJSON(privateKey, "books", json);
       setOpen(false);
       history.push('/booklist');
       setLoading(false);

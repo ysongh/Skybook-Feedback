@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'
 import { Grid, Container, Card, Image, Form, Header, Comment, Button, Label } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
@@ -7,21 +7,42 @@ import 'react-quill/dist/quill.snow.css';
 import { GlobalContext } from '../context/GlobalState';
 import Spinner from '../components/loading/Spinner';
 
-const dataKey = "localhost";
-
 function BookDetail() {
   const { userID, contentRecord, privateKey, publicKey, clientSkyDB } = useContext(GlobalContext);
   const { id } = useParams();
   const { state = {} } = useLocation();
 
-  const [comments, setComments] = useState(state.selectedComments);
+  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function getCommentsFromSkyDB() {
+      try {
+        const { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "comments");
+        console.log(data, skylink);
+
+        if (userID) {
+          await contentRecord.recordInteraction({
+            skylink,
+            metadata: {"action": "view comments"}
+          });
+        }
+        
+        setComments(data.comments);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getCommentsFromSkyDB();
+  }, [])
+
 
   async function addComment() {
     try {
       setLoading(true);
-      let { data, skylink } = await clientSkyDB.db.getJSON(publicKey, dataKey);
+      let { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "comments");
       console.log(data, skylink);
 
       const commentData = {
@@ -31,17 +52,25 @@ function BookDetail() {
         userID
       }
 
+      // for front end
       let _comments = comments;
       _comments.push(commentData);
 
-      data.comments.push(commentData);
+      // for SkyDB
+      let json;
+      if (!data) {
+        json = {
+          comments: [commentData]
+        };
+      }
+      else {
+        data.comments.push(commentData);
+        json = {
+          comments: data.comments
+        };
+      }
 
-      const json = {
-        books: data.books,
-        comments: data.comments
-      };
-
-      const res = await clientSkyDB.db.setJSON(privateKey, dataKey, json);
+      const res = await clientSkyDB.db.setJSON(privateKey, "comments", json);
 
       await contentRecord.recordNewContent({
         skylink: res.skylink,
