@@ -6,6 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import { GlobalContext } from '../context/GlobalState';
 import Spinner from '../components/loading/Spinner';
+import CommentLoading from '../components/loading/CommentLoading';
 
 function BookDetail() {
   const { userID, contentRecord, privateKey, publicKey, clientSkyDB } = useContext(GlobalContext);
@@ -15,10 +16,12 @@ function BookDetail() {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const [commentLoading, setCommentLoading] = useState(false);
 
   useEffect(() => {
     async function getCommentsFromSkyDB() {
       try {
+        setCommentLoading(true);
         const { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "comments");
         console.log(data, skylink);
 
@@ -30,8 +33,10 @@ function BookDetail() {
         }
         
         setComments(data.comments);
+        setCommentLoading(false);
       } catch (error) {
         console.log(error);
+        setCommentLoading(false);
       }
     }
 
@@ -124,24 +129,27 @@ function BookDetail() {
             {loading && <Spinner />}
           </Form> }
 
-          {comments.map((comment, index) => {
-            if (comment.bookId === id) {
-              return (
-                <Comment style={{marginBottom: '1rem'}} key={index}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Image size='mini' avatar src="/images/defaultuser.png" />
-                    <Comment.Author as='a'>{comment.userID.substring(0,15)}...{comment.userID.substring(49,64)}</Comment.Author>
-                  </div>
-                  <Comment.Content>
-                    <Comment.Metadata>
-                      <div>{comment.date}</div>
-                    </Comment.Metadata>
-                    <Comment.Text>{comment.comment}</Comment.Text>
-                  </Comment.Content>
-                </Comment>
-              )
-            }
-          })}
+          {commentLoading
+            ?  <CommentLoading />
+            : comments.map((comment, index) => {
+              if (comment.bookId === id) {
+                return (
+                  <Comment style={{marginBottom: '1rem'}} key={index}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Image size='mini' avatar src="/images/defaultuser.png" />
+                      <Comment.Author as='a'>{comment.userID.substring(0,15)}...{comment.userID.substring(49,64)}</Comment.Author>
+                    </div>
+                    <Comment.Content>
+                      <Comment.Metadata>
+                        <div>{comment.date}</div>
+                      </Comment.Metadata>
+                      <Comment.Text>{comment.comment}</Comment.Text>
+                    </Comment.Content>
+                  </Comment>
+                )
+              }
+            })
+          }
         </Grid.Column>
       </Grid>
     </Container>
