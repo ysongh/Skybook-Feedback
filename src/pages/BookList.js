@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Container, Card, Button, Label, Pagination } from 'semantic-ui-react';
+import { Container, Card, Button, Label, Pagination, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 import { GlobalContext } from '../context/GlobalState';
@@ -79,9 +79,14 @@ function BookList() {
                   </div>
                   <Card.Header>{book.title}</Card.Header>
                   
-                  <Card.Description>
+                  <Card.Description style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     {book.preview}
+                    <div>
+                      <Icon name='like' />{book.likes.length} Likes
+                    </div>
+                    
                   </Card.Description>
+                 
                 </Card.Content>
               </Card>
             </Card.Group>

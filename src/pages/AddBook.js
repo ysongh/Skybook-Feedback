@@ -28,6 +28,7 @@ function AddBook({ selectedTitle, selectedBody, setOpen}) {
         preview,
         body,
         date: new Date().toLocaleDateString(),
+        likes: [],
         userID
       };
 

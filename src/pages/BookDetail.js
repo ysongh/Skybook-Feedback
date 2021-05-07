@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'
-import { Grid, Container, Card, Image, Form, Header, Comment, Button, Label } from 'semantic-ui-react';
+import { Grid, Container, Card, Image, Form, Header, Comment, Button, Label, Icon } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -17,6 +17,7 @@ function BookDetail() {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [commentLoading, setCommentLoading] = useState(false);
+  const [likes, setLikes] = useState(state.selectedBook.likes.length);
 
   useEffect(() => {
     async function getCommentsFromSkyDB() {
@@ -91,6 +92,29 @@ function BookDetail() {
     }
   }
 
+  async function likeABookOnSkyDB() {
+    let { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "books");
+    console.log(data.books[id], skylink);
+
+    if(!data.books[id].likes.includes(userID)){
+      setLikes(likes + 1);
+      data.books[id].likes.push(userID);
+
+      const json = {
+        books: data.books
+      };
+
+      const res = await clientSkyDB.db.setJSON(privateKey, "books", json);
+      console.log(res)
+      await contentRecord.recordNewContent({
+        skylink: res.skylink,
+        metadata: {"action": "like a book"}
+      });
+    }
+
+    alert("You already liked this book");
+  }
+
   return (
     <Container className="bodyHeight">
       <br />
@@ -110,10 +134,15 @@ function BookDetail() {
                 <br />
                 <ReactQuill className="hideToolbar" theme="snow" value={state.selectedBook.body} readOnly/>
                 <br />
-                <Label as='a' image>
-                  <img src='/images/defaultuser.png' />
-                  {state.selectedBook.author}
-                </Label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Label as='a' image>
+                    <img src='/images/defaultuser.png' />
+                    {state.selectedBook.author}
+                  </Label>
+                  <div onClick={likeABookOnSkyDB}>
+                    <Icon name='like' />{likes} Likes
+                  </div>
+                </div>
               </Card.Content>
             </Card>
           </Card.Group>
