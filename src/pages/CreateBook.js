@@ -96,7 +96,7 @@ function CreateBook() {
           </Button>
         </div>
         <TextEditor body={body} setBody={setBody} />
-        {loading && <Spinner />}
+        {loading && <Spinner label="Updating..." />}
       </Form>
     </Container>
   );

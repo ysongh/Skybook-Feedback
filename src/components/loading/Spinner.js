@@ -1,10 +1,10 @@
 import React from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react'
 
-function Spinner() {
+function Spinner({ label = "Adding..." }) {
   return (
     <Dimmer active inverted>
-      <Loader inverted content='Loading' />
+      <Loader inverted content={label} />
     </Dimmer>
   )
 }
