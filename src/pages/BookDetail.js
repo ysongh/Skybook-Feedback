@@ -111,8 +111,9 @@ function BookDetail() {
         metadata: {"action": "like a book"}
       });
     }
-
-    alert("You already liked this book");
+    else{
+      alert("You already liked this book");
+    }
   }
 
   return (
