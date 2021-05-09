@@ -9,6 +9,7 @@ import AddBook from './pages/AddBook';
 import BookDetail from './pages/BookDetail';
 import MyBooks from './pages/MyBooks';
 import CreateBook from './pages/CreateBook';
+import Profile from './pages/Profile';
 import Footer from './components/Footer';
 
 function App() {
@@ -26,8 +27,11 @@ function App() {
           <Route path="/createbook">
             <CreateBook />
           </Route>
-          <Route path="/bookdetail/:id">
-            <BookDetail />
+          <Route path="/createbook">
+            <CreateBook />
+          </Route>
+          <Route path="/profile">
+            <Profile />
           </Route>
           <Route path="/editbook/:id">
             <CreateBook />

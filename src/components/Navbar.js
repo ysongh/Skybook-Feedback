@@ -86,6 +86,13 @@ function Navbar() {
           active={activeItem === 'mybooks'}
           onClick={() => setActiveItem('mybooks')}
         />}
+        {userID && <Menu.Item
+          as={Link}
+          to="/profile"
+          name='profile'
+          active={activeItem === 'profile'}
+          onClick={() => setActiveItem('profile')}
+        />}
         {loggedIn ? (
           <Menu.Menu position='right'>
             <Menu.Item>
