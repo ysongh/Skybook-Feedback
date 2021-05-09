@@ -1,13 +1,53 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Header, Image, Grid, Form, Button } from 'semantic-ui-react';
 
 import { GlobalContext } from '../context/GlobalState';
 
+const dataDomain = window.location.hostname;
+
 function Profile() {
-  const { userID } = useContext(GlobalContext);
+  const { userID, mySky, contentRecord } = useContext(GlobalContext);
 
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+
+  useEffect(() => {
+    const getJSONfromMySky = async (userID) => {
+      try {
+        const { data, skylink } = await mySky.getJSON(dataDomain + "/profile" + userID);
+        console.log(data, skylink);
+
+        await contentRecord.recordInteraction({
+          skylink,
+          metadata: {"action": "See Profile"}
+        });
+        setName(data?.name || "");
+        setBio(data?.bio || "");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getJSONfromMySky(userID);
+  }, [userID])
+
+  const updateProfileOnMySky = async () => {
+    try {
+      const json = {
+        name: name,
+        bio: bio
+      }
+      const { data, skylink } = await mySky.setJSON((dataDomain + "/profile" + userID), json);
+      console.log(data, skylink);
+
+      await contentRecord.recordInteraction({
+        skylink,
+        metadata: { "action": "update profile" }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Container className="bodyHeight">
@@ -34,7 +74,8 @@ function Profile() {
               <Button
                 type='submit'
                 color="black"
-              >Change</Button>
+                onClick={updateProfileOnMySky}
+              >Update</Button>
             </Form>
           </Grid.Column>
         </Grid.Row>
