@@ -140,9 +140,15 @@ function BookDetail() {
                     <img src='/images/defaultuser.png' />
                     {state.selectedBook.author}
                   </Label>
-                  <div onClick={likeABookOnSkyDB}>
-                    <Icon name='like' />{likes} Likes
-                  </div>
+                  <Button as='div' labelPosition='right' onClick={likeABookOnSkyDB}>
+                    <Button color='red'>
+                      <Icon name='heart' />
+                      Like
+                    </Button>
+                    <Label as='a' basic color='red' pointing='left'>
+                      {likes}
+                    </Label>
+                  </Button>
                 </div>
               </Card.Content>
             </Card>

@@ -27,11 +27,11 @@ function App() {
           <Route path="/createbook">
             <CreateBook />
           </Route>
-          <Route path="/createbook">
-            <CreateBook />
-          </Route>
           <Route path="/profile">
             <Profile />
+          </Route>
+          <Route path="/bookdetail/:id">
+            <BookDetail />
           </Route>
           <Route path="/editbook/:id">
             <CreateBook />
