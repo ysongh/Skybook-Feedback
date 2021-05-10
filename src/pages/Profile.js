@@ -6,10 +6,11 @@ import { GlobalContext } from '../context/GlobalState';
 const dataDomain = window.location.hostname;
 
 function Profile() {
-  const { userID, mySky, contentRecord } = useContext(GlobalContext);
+  const { userID, mySky, clientSkyDB, contentRecord } = useContext(GlobalContext);
 
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  const [imageURL, setImageURL] = useState("");
 
   useEffect(() => {
     const getJSONfromMySky = async (userID) => {
@@ -23,6 +24,7 @@ function Profile() {
         });
         setName(data?.name || "");
         setBio(data?.bio || "");
+        setImageURL(data?.imageURL || "");
       } catch (error) {
         console.log(error);
       }
@@ -35,7 +37,8 @@ function Profile() {
     try {
       const json = {
         name: name,
-        bio: bio
+        bio: bio,
+        imageURL: imageURL
       }
       const { data, skylink } = await mySky.setJSON((dataDomain + "/profile" + userID), json);
       console.log(data, skylink);
@@ -49,6 +52,20 @@ function Profile() {
     }
   }
 
+  const getFileAndUploadONSkyDB = async event => {
+    try{
+      const file = event.target.files[0];
+      const { skylink } = await clientSkyDB.uploadFile(file);
+
+      // skylinks start with `sia://` and don't specify a portal URL
+      // generate URLs for our current portal though.
+      const skylinkUrl = await clientSkyDB.getSkylinkUrl(skylink);
+      setImageURL(skylinkUrl);
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
   return (
     <Container className="bodyHeight">
       <div style={{ marginBottom: '1rem' }}></div>
@@ -57,7 +74,8 @@ function Profile() {
       <Grid columns={2} divided>
         <Grid.Row>
           <Grid.Column width={6}>
-            <Image src='/images/defaultuser.png' size='medium' circular bordered />
+            <Image src={imageURL ? imageURL : '/images/defaultuser.png'} size='medium' circular bordered />
+            <input type="file" onChange={getFileAndUploadONSkyDB} />
           </Grid.Column>
           <Grid.Column width={10}>
             <p>User Id: {userID}</p>
