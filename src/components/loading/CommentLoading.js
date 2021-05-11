@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Placeholder } from 'semantic-ui-react'
+import { Grid, Placeholder } from 'semantic-ui-react'
 
 function CommentLoading() {
   return (

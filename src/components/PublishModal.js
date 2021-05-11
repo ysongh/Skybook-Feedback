@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+import { Header, Modal } from 'semantic-ui-react'
 
 import AddBook from '../pages/AddBook';
 

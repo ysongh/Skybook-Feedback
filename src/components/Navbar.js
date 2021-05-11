@@ -9,7 +9,6 @@ import { GlobalContext } from '../context/GlobalState';
 const portal = 'https://siasky.net/';   // allow for developing on localhost
 const client = new SkynetClient(portal);
 const contentRecord = new ContentRecordDAC();
-const hostApp = "host-app.hns";
 const dataDomain = window.location.hostname;
 
 console.log(window.location.hostname)

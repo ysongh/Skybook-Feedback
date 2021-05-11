@@ -93,6 +93,11 @@ function BookDetail() {
   }
 
   async function likeABookOnSkyDB() {
+    if(!userID){
+      alert("Login with MySky to like this book");
+      return;
+    }
+
     let { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "books");
     console.log(data.books[id], skylink);
 
