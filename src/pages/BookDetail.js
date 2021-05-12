@@ -50,12 +50,12 @@ function BookDetail() {
       const { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "books");
       console.log(data, skylink);
       setBooks(data.books[id]);
-      setLikes(data.books[id].likes.length);
+      setLikes(data.books[id].likes);
     }
 
     if(state.selectedBook) {
       setBooks(state.selectedBook);
-      setLikes(state.selectedBook.likes.length);
+      setLikes(state.selectedBook.likes);
     }
     else{
       getBookFromSkyDB();
@@ -120,7 +120,9 @@ function BookDetail() {
     console.log(data.books[id], skylink);
 
     if(!data.books[id].likes.includes(userID)){
-      setLikes(likes + 1);
+      let temp = likes;
+      temp.push(userID);
+      setLikes(temp);
       data.books[id].likes.push(userID);
 
       const json = {
@@ -165,12 +167,12 @@ function BookDetail() {
                       {book.author}
                     </Label>
                     <Button as='div' labelPosition='right' onClick={likeABookOnSkyDB}>
-                      <Button color='red'>
+                      <Button color={likes.includes(userID) && 'red'}>
                         <Icon name='heart' />
                         Like
                       </Button>
-                      <Label as='a' basic color='red' pointing='left'>
-                        {likes}
+                      <Label as='a' basic color={likes.includes(userID) && 'red'} pointing='left'>
+                        {likes.length}
                       </Label>
                     </Button>
                   </div>
