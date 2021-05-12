@@ -120,9 +120,6 @@ function BookDetail() {
     console.log(data.books[id], skylink);
 
     if(!data.books[id].likes.includes(userID)){
-      let temp = likes;
-      temp.push(userID);
-      setLikes(temp);
       data.books[id].likes.push(userID);
 
       const json = {
@@ -131,6 +128,7 @@ function BookDetail() {
 
       const res = await clientSkyDB.db.setJSON(privateKey, "books", json);
       console.log(res)
+      setLikes(res.data.books[id].likes);
       await contentRecord.recordNewContent({
         skylink: res.skylink,
         metadata: {"action": "like a book"}
@@ -167,11 +165,11 @@ function BookDetail() {
                       {book.author}
                     </Label>
                     <Button as='div' labelPosition='right' onClick={likeABookOnSkyDB}>
-                      <Button color={likes.includes(userID) && 'red'}>
+                      <Button color={likes.includes(userID) ? 'red' : 'grey'}>
                         <Icon name='heart' />
                         Like
                       </Button>
-                      <Label as='a' basic color={likes.includes(userID) && 'red'} pointing='left'>
+                      <Label as='a' basic color={likes.includes(userID) ? 'red' : 'grey'} pointing='left'>
                         {likes.length}
                       </Label>
                     </Button>
