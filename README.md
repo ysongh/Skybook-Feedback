@@ -1,7 +1,7 @@
 # Skybook Feedback
 A Skapp where writers can upload their book or story on Skynet and receive feedback from the community
 
-- Live Site - https://10065r21sqss89gi6qn9vl3plhrf54jcn868rja486bm97285qttdp0.siasky.net/
+- Live Site - https://1005sg4a412di24lq2vcaqv6rhaoi83qmrcvhladn2e386eo331sv70.siasky.net/#/
 - Demo - https://youtu.be/iDwazBdOc5Q
 
 ## Features

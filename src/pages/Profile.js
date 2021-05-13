@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Container, Header, Image, Grid, Form, Button } from 'semantic-ui-react';
 
 import { GlobalContext } from '../context/GlobalState';
+import Spinner from '../components/loading/Spinner';
 
 const dataDomain = window.location.hostname;
 
@@ -11,6 +12,7 @@ function Profile() {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getJSONfromMySky = async (userID) => {
@@ -35,6 +37,8 @@ function Profile() {
 
   const updateProfileOnMySky = async () => {
     try {
+      setLoading(true);
+
       const json = {
         name: name,
         bio: bio,
@@ -47,8 +51,10 @@ function Profile() {
         skylink,
         metadata: { "action": "update profile" }
       });
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
@@ -94,6 +100,7 @@ function Profile() {
                 color="black"
                 onClick={updateProfileOnMySky}
               >Update</Button>
+              {loading && <Spinner label="Updating..." />}
             </Form>
           </Grid.Column>
         </Grid.Row>

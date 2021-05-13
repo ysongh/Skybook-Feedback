@@ -55,6 +55,7 @@ function Navbar() {
 
     if (status) {
       setUserID(await mySky.userID());
+      history.push('/profile');
     }
   };
 
