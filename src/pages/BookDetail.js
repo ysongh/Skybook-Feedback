@@ -8,8 +8,10 @@ import { GlobalContext } from '../context/GlobalState';
 import Spinner from '../components/loading/Spinner';
 import CommentLoading from '../components/loading/CommentLoading';
 
+const dataDomain = window.location.hostname;
+
 function BookDetail() {
-  const { userID, contentRecord, privateKey, publicKey, clientSkyDB } = useContext(GlobalContext);
+  const { userID, contentRecord, privateKey, publicKey, clientSkyDB, mySky } = useContext(GlobalContext);
   const { id } = useParams();
   const { state = {} } = useLocation();
 
@@ -19,6 +21,7 @@ function BookDetail() {
   const [loading, setLoading] = useState(false);
   const [commentLoading, setCommentLoading] = useState(false);
   const [likes, setLikes] = useState([]);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     async function getCommentsFromSkyDB() {
@@ -62,6 +65,15 @@ function BookDetail() {
     }
   }, [])
 
+  useEffect(() => {
+    async function getUserData(userID) {
+      const { data, skylink } = await mySky.getJSON(dataDomain + "/profile" + userID);
+      console.log(data, skylink);
+      setUserData(data);
+    }
+
+    if(userID) getUserData(userID);
+  }, [userID])
 
   async function addComment() {
     try {
@@ -73,6 +85,8 @@ function BookDetail() {
         bookId: id,
         comment,
         date: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
+        userName: userData?.name || 'Anonymous',
+        userImage: userData?.imageURL || '',
         userID
       }
 
@@ -197,8 +211,8 @@ function BookDetail() {
                 return (
                   <Comment style={{marginBottom: '1rem'}} key={index}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Image size='mini' avatar src="/images/defaultuser.png" />
-                      <Comment.Author as='a'>{comment.userID.substring(0,15)}...{comment.userID.substring(49,64)}</Comment.Author>
+                      <Image size='mini' avatar src={comment?.userImage || "/images/defaultuser.png"} />
+                      <Comment.Author as='a'>{comment.userName}</Comment.Author>
                     </div>
                     <Comment.Content>
                       <Comment.Metadata>
