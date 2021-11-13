@@ -16,6 +16,8 @@ A Skapp where writers can upload their book or story on Skynet and receive feedb
 - SkyDB
 
 ## Running the Skapp on local host
+**Important: Using MySky on Brave does not work**
+
 - Clone or download this repository
 - Run `npm i` to install the dependencies
 - Create a file called 'config.js' on the src folder and add the following code
@@ -23,3 +25,6 @@ A Skapp where writers can upload their book or story on Skynet and receive feedb
 export const seedphase = "your words";
 ```
 - Run `npm start` to start the Skapp
+
+## Deploying to Skynet
+Change `const client = new SkynetClient(portal);` to `const client = new SkynetClient();`
