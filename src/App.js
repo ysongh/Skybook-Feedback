@@ -6,6 +6,7 @@ import { GlobalProvider } from './context/GlobalState';
 import Navbar from './components/Navbar';
 import BookList from './pages/BookList';
 import AddBook from './pages/AddBook';
+import UploadBook from './pages/UploadBook';
 import BookDetail from './pages/BookDetail';
 import MyBooks from './pages/MyBooks';
 import CreateBook from './pages/CreateBook';
@@ -23,6 +24,9 @@ function App() {
           </Route>
           <Route path="/addbook">
             <AddBook />
+          </Route>
+          <Route path="/uploadbook">
+            <UploadBook />
           </Route>
           <Route path="/createbook">
             <CreateBook />

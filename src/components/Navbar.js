@@ -79,6 +79,13 @@ function Navbar() {
           active={activeItem === 'home'}
           onClick={() => setActiveItem('home')}
         />
+        <Menu.Item
+          as={Link}
+          to="/uploadbook"
+          name='upload book'
+          active={activeItem === 'uploadbook'}
+          onClick={() => setActiveItem('uploadbook')}
+        />
         {userID && <Menu.Item
           as={Link}
           to="/mybooks"
