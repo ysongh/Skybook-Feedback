@@ -15,10 +15,24 @@ function UploadBook() {
   const [bookURL, setBookURL] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const getBookFile = event => {
-    const file = event.target.files[0];
-    console.log(file);
-    setBookURL(file);
+  const getBookFile = async event => {
+    try{
+      setLoading(true);
+      const file = event.target.files[0];
+      console.log(file);
+  
+      const { skylink } = await clientSkyDB.uploadFile(file);
+  
+      // skylinks start with `sia://` and don't specify a portal URL
+      // generate URLs for our current portal though.
+      const skylinkUrl = await clientSkyDB.getSkylinkUrl(skylink);
+      console.log(skylinkUrl);
+      setBookURL(skylinkUrl);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   }
 
   async function addBookToSkyDB() {
