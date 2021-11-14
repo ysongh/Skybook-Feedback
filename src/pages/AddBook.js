@@ -4,7 +4,7 @@ import { Container, Card, Form, Button } from 'semantic-ui-react';
 
 import { GlobalContext } from '../context/GlobalState';
 import Spinner from '../components/loading/Spinner';
-import TextEditor from '../components/TextEditor';
+// import TextEditor from '../components/TextEditor';
 
 function AddBook({ selectedTitle, selectedBody, setOpen}) {
   const { userID, privateKey, publicKey, clientSkyDB } = useContext(GlobalContext);
@@ -74,10 +74,10 @@ function AddBook({ selectedTitle, selectedBody, setOpen}) {
               <label>Preview</label>
               <input value={preview} onChange={(e) => setPreview(e.target.value)} />
             </Form.Field>
-            <Form.Field>
+            {/* <Form.Field>
               <label>Body</label>
               <TextEditor body={body} setBody={setBody} />
-            </Form.Field>
+            </Form.Field> */}
             
             <Button
               type='submit'

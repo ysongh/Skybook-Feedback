@@ -21,7 +21,7 @@ function MyBooks() {
   const openModal = index => {
     setOpen(true);
     setTitle(books[index].title)
-    setBody(books[index].body);
+    setBody(books[index].bookURL);
   }
 
   useEffect(() => {
@@ -33,10 +33,10 @@ function MyBooks() {
         const { data, skylink } = await mySky.getJSON(dataDomain + "/" + userID);
         console.log(data, skylink);
 
-        await contentRecord.recordInteraction({
-          skylink,
-          metadata: data
-        });
+        // await contentRecord.recordInteraction({
+        //   skylink,
+        //   metadata: data
+        // });
         
         setLoading(false);
         setBooks(data.books);
@@ -63,10 +63,10 @@ function MyBooks() {
       const { data, skylink } = await mySky.setJSON((dataDomain + "/" + userID), { books: temp });
       console.log(data, skylink);
 
-      await contentRecord.recordInteraction({
-        skylink,
-        metadata: { "action": "remove a book" }
-      });
+      // await contentRecord.recordInteraction({
+      //   skylink,
+      //   metadata: { "action": "remove a book" }
+      // });
 
       setBooks(data.books);
       setOpenConfirm(false);
@@ -83,7 +83,7 @@ function MyBooks() {
       <Header as='h1' style={{ marginBottom: '0rem' }}>Your List of book draft</Header>
       <p style={{ color: 'grey' }}>* Your drafts are private until you publish them</p>
       <p>User Id: {userID ? userID : <Placeholder.Line />}</p>
-      <Button as={Link} to="/createbook" color='black' style={{ marginBottom: '1rem' }}>
+      <Button as={Link} to="/uploadbook" color='black' style={{ marginBottom: '1rem' }}>
         New Draft
       </Button>
       {loading
@@ -104,10 +104,7 @@ function MyBooks() {
                     as={Link}
                     basic
                     color='green'
-                    to={{
-                        pathname: `/editbook/${index}`,
-                        state: { selectedBook: books[index]}
-                      }}
+                    to={`/mybookdetail/${index}`}
                     >
                     Open
                   </Button>

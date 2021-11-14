@@ -20,10 +20,10 @@ function Profile() {
         const { data, skylink } = await mySky.getJSON(dataDomain + "/profile" + userID);
         console.log(data, skylink);
 
-        await contentRecord.recordInteraction({
-          skylink,
-          metadata: {"action": "See Profile"}
-        });
+        // await contentRecord.recordInteraction({
+        //   skylink,
+        //   metadata: {"action": "See Profile"}
+        // });
         setName(data?.name || "");
         setBio(data?.bio || "");
         setImageURL(data?.imageURL || "");

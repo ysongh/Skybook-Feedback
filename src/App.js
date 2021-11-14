@@ -7,6 +7,7 @@ import BookList from './pages/BookList';
 import AddBook from './pages/AddBook';
 import UploadBook from './pages/UploadBook';
 import BookDetail from './pages/BookDetail';
+import MyBookDetail from './pages/MyBookDetail';
 import MyBooks from './pages/MyBooks';
 import CreateBook from './pages/CreateBook';
 import Profile from './pages/Profile';
@@ -39,6 +40,9 @@ function App() {
           </Route>
           <Route path="/bookdetail/:id">
             <BookDetail />
+          </Route>
+          <Route path="/mybookdetail/:id">
+            <MyBookDetail />
           </Route>
           <Route path="/editbook/:id">
             <CreateBook />

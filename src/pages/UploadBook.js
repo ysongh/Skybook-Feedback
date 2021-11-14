@@ -5,8 +5,10 @@ import { Container, Card, Form, Button } from 'semantic-ui-react';
 import { GlobalContext } from '../context/GlobalState';
 import Spinner from '../components/loading/Spinner';
 
+const dataDomain = window.location.hostname;
+
 function UploadBook() {
-  const { userID, privateKey, publicKey, clientSkyDB } = useContext(GlobalContext);
+  const { userID, mySky, clientSkyDB } = useContext(GlobalContext);
   const history = useHistory();
   
   const [title, setTitle] = useState("");
@@ -35,10 +37,10 @@ function UploadBook() {
     }
   }
 
-  async function addBookToSkyDB() {
+  async function addBookToMySky() {
     try {
       setLoading(true);
-      let { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "books");
+      const { data, skylink } = await mySky.getJSON(dataDomain + "/" + userID);
       console.log(data, skylink);
 
       const bookData = {
@@ -65,9 +67,11 @@ function UploadBook() {
           books: data.books
         };
       }
-      
-      await clientSkyDB.db.setJSON(privateKey, "books", json);
-      history.push('/booklist');
+
+      // Set discoverable JSON data at the given path. The return type is the same as getJSON.
+      await mySky.setJSON((dataDomain + "/" + userID), json);
+
+      history.push('/mybooks');
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -97,13 +101,12 @@ function UploadBook() {
             <Form.Field>
               <label>Book (PDF only)</label>
               <input type="file" onChange={getBookFile} />
-              <p>* Your PDF will be public</p>
             </Form.Field>
             
             <Button
               type='submit'
               color="black"
-              onClick={addBookToSkyDB}
+              onClick={addBookToMySky}
               disabled={!title || !author || !preview || !bookURL}
             >Upload</Button>
             
