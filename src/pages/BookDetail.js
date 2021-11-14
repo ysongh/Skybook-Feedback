@@ -25,6 +25,18 @@ function BookDetail() {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
+  document.onkeydown = function(e) {
+    console.log(pageNumber)
+    switch (e.keyCode) {
+      case 37:
+        if(pageNumber > 1) setPageNumber(pageNumber - 1);
+        break;
+      case 39:
+        if(pageNumber < numPages) setPageNumber(pageNumber + 1);
+        break;
+    }
+  };
+
   useEffect(() => {
     async function getCommentsFromSkyDB() {
       try {
@@ -207,7 +219,7 @@ function BookDetail() {
                     <Pagination
                       pointing
                       secondary
-                      defaultActivePage={pageNumber}
+                      activePage={pageNumber}
                       totalPages={numPages}
                       onPageChange={(e, data) => changePage(e, data)}
                     />
