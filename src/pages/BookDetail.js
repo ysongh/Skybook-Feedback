@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'
-import { Grid, Container, Card, Image, Form, Header, Comment, Button, Label, Icon } from 'semantic-ui-react';
-import ReactQuill from 'react-quill';
+import { Grid, Container, Card, Image, Form, Header, Comment, Pagination, Button, Label, Icon } from 'semantic-ui-react';
+import { Document, Page } from 'react-pdf'
 import 'react-quill/dist/quill.snow.css';
 
 import { GlobalContext } from '../context/GlobalState';
@@ -22,6 +22,8 @@ function BookDetail() {
   const [commentLoading, setCommentLoading] = useState(false);
   const [likes, setLikes] = useState([]);
   const [userData, setUserData] = useState({});
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     async function getCommentsFromSkyDB() {
@@ -63,6 +65,10 @@ function BookDetail() {
     else{
       getBookFromSkyDB();
     }
+
+    const page = JSON.parse(localStorage.getItem('pages')) || {};
+    console.log(page, "Page Number from bookmark");
+    setPageNumber(page[id] || 1);
   }, [])
 
   useEffect(() => {
@@ -74,6 +80,22 @@ function BookDetail() {
 
     if(userID) getUserData(userID);
   }, [userID])
+
+  function onDocumentLoadSuccess({ numPages }){
+    setNumPages(numPages);
+  }
+
+  function changePage(e, data){
+    console.log(data);
+    setPageNumber(data.activePage);
+  }
+
+  function bookmark(){
+    let data = JSON.parse(localStorage.getItem('pages')) || {};
+    console.log("add", data)
+    data[id] = pageNumber;
+    localStorage.setItem('pages', JSON.stringify(data));
+  }
 
   async function addComment() {
     try {
@@ -156,7 +178,6 @@ function BookDetail() {
   return (
     <Container className="bodyHeight">
       <br />
-
       <Grid>
         {book.title && (
           <Grid.Column mobile={16} tablet={16} computer={10}>
@@ -167,11 +188,30 @@ function BookDetail() {
                     <Card.Header style={{ fontSize: '1.75rem' }}>{book.title}</Card.Header>
                     <Card.Meta>{book.date}</Card.Meta>
                   </div>
-                  <Card.Description>
-                    {book.preview}
-                  </Card.Description>
-                  <br />
-                  <ReactQuill className="hideToolbar" theme="snow" value={book.body} readOnly/>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Card.Header>Page {pageNumber}</Card.Header>
+                    <Button color="blue" onClick={bookmark}>
+                      <Icon name="bookmark" />
+                      Bookmark
+                    </Button>
+                  </div>
+
+                  {/* <ReactQuill className="hideToolbar" theme="snow" value={book.body} readOnly/> */}
+                  <Document
+                    file={book.bookURL}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={pageNumber} width={650}/>
+                  </Document>
+                  <center style={{ marginTop: '.7rem' }}>
+                    <Pagination
+                      pointing
+                      secondary
+                      defaultActivePage={pageNumber}
+                      totalPages={numPages}
+                      onPageChange={(e, data) => changePage(e, data)}
+                    />
+                  </center>
                   <br />
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Label as='a' image>
