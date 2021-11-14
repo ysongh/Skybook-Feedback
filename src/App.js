@@ -1,6 +1,5 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import './App.css';
 
 import { GlobalProvider } from './context/GlobalState';
 import Navbar from './components/Navbar';
@@ -12,6 +11,10 @@ import MyBooks from './pages/MyBooks';
 import CreateBook from './pages/CreateBook';
 import Profile from './pages/Profile';
 import Footer from './components/Footer';
+import './App.css';
+
+import { pdfjs } from 'react-pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function App() {
   return (

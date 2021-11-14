@@ -52,7 +52,7 @@ function BookList() {
       <Card
         fluid
         color='red'
-        header='Create your books or stories and share it for the world to see'
+        header='Upload your books or stories and share it for the world to see'
       />
 
       {loading 
@@ -81,9 +81,9 @@ function BookList() {
                   
                   <Card.Description style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     {book.preview}
-                    <div>
+                    {/* <div>
                       <Icon name='like' />{book.likes.length} Likes
-                    </div>
+                    </div> */}
                     
                   </Card.Description>
                  

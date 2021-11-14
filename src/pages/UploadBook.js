@@ -95,8 +95,9 @@ function UploadBook() {
               <input value={preview} onChange={(e) => setPreview(e.target.value)} />
             </Form.Field>
             <Form.Field>
-              <label>Book (PDF)</label>
+              <label>Book (PDF only)</label>
               <input type="file" onChange={getBookFile} />
+              <p>* Your PDF will be public</p>
             </Form.Field>
             
             <Button
