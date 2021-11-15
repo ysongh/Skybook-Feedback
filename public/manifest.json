@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Skybook Feedback",
+  "name": "Skybook Feedback",
+  "description": "User can upload a book in PDF format and view it and bookmark it",
   "icons": [
     {
       "src": "favicon.ico",

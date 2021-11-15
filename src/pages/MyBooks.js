@@ -14,14 +14,15 @@ function MyBooks() {
   const [books, setBooks] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [pdfData, setPDFData] = useState({});
+  // const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
 
   const openModal = index => {
     setOpen(true);
-    setTitle(books[index].title)
-    setBody(books[index].bookURL);
+    setPDFData(books[index])
+    // setBody(books[index].bookURL);
   }
 
   useEffect(() => {
@@ -81,7 +82,9 @@ function MyBooks() {
     <Container className="bodyHeight">
       <div style={{ marginBottom: '1rem' }}></div>
       <Header as='h1' style={{ marginBottom: '0rem' }}>Your List of book draft</Header>
-      <p style={{ color: 'grey' }}>* Your drafts are private until you publish them</p>
+      <p style={{ color: 'grey' }}>
+        * Your drafts are private and store on your MySky account until you publish them
+      </p>
       <p>User Id: {userID ? userID : <Placeholder.Line />}</p>
       <Button as={Link} to="/uploadbook" color='black' style={{ marginBottom: '1rem' }}>
         New Draft
@@ -124,8 +127,7 @@ function MyBooks() {
       <PublishModal
         open={open}
         setOpen={setOpen}
-        title={title}
-        body={body} />
+        pdfData={pdfData} />
     </Container>
   );
 }

@@ -22,12 +22,12 @@ function BookList() {
         const { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "books");
         console.log(data, skylink);
 
-        if(userID){
-          await contentRecord.recordInteraction({
-            skylink,
-            metadata: {"action": "view books"}
-          });
-        }
+        // if(userID){
+        //   await contentRecord.recordInteraction({
+        //     skylink,
+        //     metadata: {"action": "view books"}
+        //   });
+        // }
         
         setBooks(data.books);
         setCurrentSet(data.books.slice(0, TOTALPAGE));
@@ -81,9 +81,9 @@ function BookList() {
                   
                   <Card.Description style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     {book.preview}
-                    {/* <div>
+                    <div>
                       <Icon name='like' />{book.likes.length} Likes
-                    </div> */}
+                    </div>
                     
                   </Card.Description>
                  

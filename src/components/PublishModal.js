@@ -3,7 +3,7 @@ import { Header, Modal } from 'semantic-ui-react'
 
 import AddBook from '../pages/AddBook';
 
-function PublishModal({ open, setOpen, title, body }) {
+function PublishModal({ open, setOpen, pdfData }) {
   return (
     <Modal
       closeIcon
@@ -13,7 +13,7 @@ function PublishModal({ open, setOpen, title, body }) {
     >
       <Header icon='book' content='Publish Book' />
       <Modal.Content>
-        <AddBook selectedTitle={title} selectedBody={body} setOpen={setOpen}/>
+        <AddBook pdfData={pdfData} setOpen={setOpen}/>
       </Modal.Content>
     </Modal>
   )

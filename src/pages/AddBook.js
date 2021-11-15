@@ -6,14 +6,14 @@ import { GlobalContext } from '../context/GlobalState';
 import Spinner from '../components/loading/Spinner';
 // import TextEditor from '../components/TextEditor';
 
-function AddBook({ selectedTitle, selectedBody, setOpen}) {
+function AddBook({ pdfData, setOpen}) {
   const { userID, privateKey, publicKey, clientSkyDB } = useContext(GlobalContext);
   const history = useHistory();
   
-  const [title, setTitle] = useState(selectedTitle);
-  const [author, setAuthor] = useState("");
-  const [preview, setPreview] = useState("");
-  const [body, setBody] = useState(selectedBody);
+  const [title, setTitle] = useState(pdfData.title || "");
+  const [author, setAuthor] = useState(pdfData.author || "");
+  const [preview, setPreview] = useState(pdfData.preview || "");
+  const [body, setBody] = useState(pdfData.bookURL || "");
   const [loading, setLoading] = useState(false);
 
   async function addBookToSkyDB() {
@@ -26,11 +26,13 @@ function AddBook({ selectedTitle, selectedBody, setOpen}) {
         title,
         author,
         preview,
-        body,
+        bookURL: body,
         date: new Date().toLocaleDateString(),
         likes: [],
         userID
       };
+
+      console.log(bookData)
 
       let json;
 
@@ -49,7 +51,7 @@ function AddBook({ selectedTitle, selectedBody, setOpen}) {
       
       await clientSkyDB.db.setJSON(privateKey, "books", json);
       setOpen(false);
-      history.push('/booklist');
+      history.push('/');
       setLoading(false);
     } catch (error) {
       console.log(error);

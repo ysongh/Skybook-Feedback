@@ -44,12 +44,12 @@ function BookDetail() {
         const { data, skylink } = await clientSkyDB.db.getJSON(publicKey, "comments");
         console.log(data, skylink);
 
-        if (userID) {
-          await contentRecord.recordInteraction({
-            skylink,
-            metadata: {"action": "view comments"}
-          });
-        }
+        // if (userID) {
+        //   await contentRecord.recordInteraction({
+        //     skylink,
+        //     metadata: {"action": "view comments"}
+        //   });
+        // }
         
         setComments(data.comments);
         setCommentLoading(false);
@@ -142,12 +142,12 @@ function BookDetail() {
         };
       }
 
-      const res = await clientSkyDB.db.setJSON(privateKey, "comments", json);
+      await clientSkyDB.db.setJSON(privateKey, "comments", json);
 
-      await contentRecord.recordNewContent({
-        skylink: res.skylink,
-        metadata: res.data
-      });
+      // await contentRecord.recordNewContent({
+      //   skylink: res.skylink,
+      //   metadata: res.data
+      // });
 
       setLoading(false);
       setComments(_comments);
@@ -250,11 +250,11 @@ function BookDetail() {
             Comments
           </Header>
 
-          {userID && <Form reply style={{marginBottom: '2rem'}}>
+          <Form reply style={{marginBottom: '2rem'}}>
             <Form.TextArea value={comment} onChange={(e) => setComment(e.target.value)}/>
             <Button disabled={!comment} content='Add Comment' labelPosition='left' icon='edit' color='black' onClick={addComment} />
             {loading && <Spinner />}
-          </Form> }
+          </Form>
 
           {commentLoading
             ?  <CommentLoading />
