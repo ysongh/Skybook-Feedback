@@ -3,7 +3,7 @@
 
 A Skapp where writers can upload their book or story on Skynet and receive feedback from the community
 
-- Live Site - https://100aiphdpvtghcmuvcktm9t41isibjsr6gdisscqp97t2gbiolbfglg.siasky.net/#/
+- Live Site - https://skybookfeedback.hns.siasky.net/
 
 ## Features
 - User can login with MySky
